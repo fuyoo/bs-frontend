@@ -1,74 +1,62 @@
 <script setup lang="ts">
-import {RouterLink, RouterView} from 'vue-router'
-import {appWindow} from '@tauri-apps/api/window'
-import {appStore} from "@/stores/app"
-import {onMounted} from "vue";
-
-const store = appStore()
+import { RouterView } from "vue-router";
+import { appWindow } from "@tauri-apps/api/window";
+import { appStore } from "@/stores/app";
+import { onMounted } from "vue";
+const store = appStore();
 onMounted(() => {
-  store.init()
-})
+  store.init();
+});
 const themeChange = (value: string) => {
-  console.log(value)
-  if (value === 'light') {
-    store.light()
+  if (value === "light") {
+    store.light();
   } else {
-    store.dark()
+    store.dark();
   }
-}
-
+};
 </script>
-
 <template>
   <div class="action">
     <a-dropdown position="br">
       <div class="act-btn">
-        <icon-settings/>
+        <icon-settings />
       </div>
       <template #content>
         <a-doption>
           <template #icon>
-            <icon-location/>
+            <icon-location />
           </template>
           <div @click.stop style="width: 100px">
-            <a-switch :default-checked="store.theme == 'dark'" checked-value="dark"
-                      unchecked-value="light" @change="themeChange">
-              <template #checked>
-                dark
-              </template>
-              <template #unchecked>
-                light
-              </template>
+            <a-switch
+              :default-checked="store.theme === 'dark'"
+              checked-value="dark"
+              unchecked-value="light"
+              @change="themeChange"
+            >
+              <template #checked> dark</template>
+              <template #unchecked> light</template>
             </a-switch>
           </div>
-
         </a-doption>
       </template>
     </a-dropdown>
     <div class="act-btn" @click="appWindow.minimize()">
-      <icon-minus/>
+      <icon-minus />
     </div>
     <div class="act-btn" @click="appWindow.toggleMaximize()">
-      <icon-fullscreen/>
+      <icon-fullscreen />
     </div>
     <div class="act-btn act-btn-close" @click="appWindow.close()">
-      <icon-close/>
+      <icon-close />
     </div>
   </div>
   <div>
-    <div class="wrapper">
-      <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
-      </nav>
-    </div>
+    <RouterView />
   </div>
-
-  <RouterView/>
 </template>
-
 <style>
-html, body {
+html,
+body {
   background: var(--color-bg-2);
   color: var(--color-text-1);
 }
@@ -77,8 +65,8 @@ body {
   --bg-highlight: #0001;
 }
 
-body[arco-theme='dark'] {
-  --bg-highlight: var(--color-bg-4)
+body[arco-theme="dark"] {
+  --bg-highlight: var(--color-bg-4);
 }
 
 a {
@@ -89,7 +77,6 @@ a:hover {
   color: var(--color-link-light-3);
 }
 </style>
-
 <style scoped lang="scss">
 .action {
   position: absolute;
