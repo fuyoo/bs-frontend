@@ -7,7 +7,7 @@ const store = appStore();
 onMounted(() => {
   store.init();
 });
-const themeChange = (value: string) => {
+const themeChange = (value: any) => {
   if (value === "light") {
     store.light();
   } else {
