@@ -1,13 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" href="/favicon.ico" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<head>
+    <meta charset="UTF-8"/>
+    <link rel="icon" href="/favicon.ico"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Vite App</title>
-  </head>
-  <body>
-    <div id="app"></div>
-    <script type="module" src="/src/main.ts"></script>
-  </body>
+</head>
+<body>
+<div data-tauri-drag-region class="title-bar">
+</div>
+<style>
+    .title-bar {
+        height: 30px;
+        background:  var(--color-bg-2);
+        user-select: none;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-sizing: border-box;
+        border-bottom: 1px solid var(--color-border-1);
+    }
+</style>
+<div id="app"></div>
+<script type="module" src="/src/main.ts"></script>
+</body>
 </html>
