@@ -3,5 +3,5 @@
 </script>
 
 <template>
- <h1>running</h1>
+  <h1>running</h1>
 </template>
