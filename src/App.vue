@@ -50,9 +50,7 @@ const themeChange = (value: any) => {
       <icon-close />
     </div>
   </div>
-  <div>
-    <RouterView />
-  </div>
+  <RouterView />
 </template>
 <style>
 html,
