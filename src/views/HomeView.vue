@@ -1,27 +1,43 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { lang } from "@/i18n";
+import { ref, getCurrentInstance, reactive } from "vue";
+import message from "@/utils/message";
+const _this = getCurrentInstance();
 let visible = ref(false);
-const handleCancel = () =>{
+const form = ref({
+  host:'',
+  db:'',
+  username:'',
+  password:''
+});
 
-}
+const handleCancel = () => {
+  //@ts-ignore
+  _this.refs.form.resetFields();
+};
 
-const handleBeforeOk = () => {
+const handleBeforeOk = (done: any) => {
+  //@ts-ignore
+  message.warning("error")
+  done(false);
+};
+const submitEvt = (res: any) => {
+  console.log(res);
+};
 
-}
-const form = ref({})
 </script>
 
 <template>
   <a-space wrap style="padding: 25px">
     <a-card class="card" hoverable>
       <div class="info">
-        <span class="" :style="{ display: 'flex', alignItems: 'center', color: '#1D2129' }">
+        <span :style="{ display: 'flex', alignItems: 'center', color: '#1D2129' }">
           <a-avatar :size="28" style="margin-right: 8px">
             <icon-link />
           </a-avatar>
           <a-typography-text>Username</a-typography-text>
         </span>
-        <a-button type="text">{{ $lang("connect") }}</a-button>
+        <a-button type="text">{{ lang("connect") }}</a-button>
       </div>
     </a-card>
     <div class="new-connect" @click="visible = true">
@@ -29,18 +45,32 @@ const form = ref({})
     </div>
   </a-space>
 
-  <a-modal draggable v-model:visible="visible" title="Modal Form" @cancel="handleCancel" @before-ok="handleBeforeOk">
-    <a-form :model="form">
-      <a-form-item field="name" label="Name">
-        <a-input v-model="form.name" />
+  <a-modal
+    :cancel-text="lang('cancel')"
+    :ok-text="lang('ok') "
+    draggable
+    v-model:visible="visible"
+    @cancel="handleCancel"
+    @before-ok="handleBeforeOk"
+  >
+    <template #title>
+      {{lang('create') }}{{ lang('connectionDialog.title') }}
+    </template>
+    <a-form :model="form" ref="form" @submit="submitEvt">
+      <a-form-item
+        field="host"
+        :label="lang('connectionDialog.formLabels.host')"
+      >
+        <a-input  v-model="form.host" placeholder="127.0.0.1:6379" />
       </a-form-item>
-      <a-form-item field="post" label="Post">
-        <a-select v-model="form.post">
-          <a-option value="post1">Post1</a-option>
-          <a-option value="post2">Post2</a-option>
-          <a-option value="post3">Post3</a-option>
-          <a-option value="post4">Post4</a-option>
-        </a-select>
+      <a-form-item field="name" :label="lang('connectionDialog.formLabels.db')">
+        <a-input v-model="form.db" placeholder="1" />
+      </a-form-item>
+      <a-form-item field="name" :label="lang('connectionDialog.formLabels.username')">
+        <a-input v-model="form.username" :placeholder="lang('connectionDialog.formLabels.username')" />
+      </a-form-item>
+      <a-form-item field="name" :label="lang('connectionDialog.formLabels.password')">
+        <a-input v-model="form.password" :placeholder="lang('connectionDialog.formLabels.password')" />
       </a-form-item>
     </a-form>
   </a-modal>

@@ -5,4 +5,6 @@ export default {
   look: "look",
   create: "create",
   detail: "detail",
+  ok: "确定",
+  cancel: "取消"
 };
