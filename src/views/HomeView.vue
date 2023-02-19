@@ -1,7 +1,6 @@
 <script setup lang="ts">
 
-import { ref, getCurrentInstance } from "vue";
-
+import {ref, getCurrentInstance} from "vue";
 
 import message from "@/utils/message";
 const _this = getCurrentInstance();
@@ -13,72 +12,16 @@ const form = ref({
   password: "",
 });
 
-const handleCancel = () => {
-  //@ts-ignore
-  _this.refs.form.resetFields();
-};
-
-const handleBeforeOk = (done: any) => {
-  //@ts-ignore
-  message.warning("error");
-  done(false);
-};
-const submitEvt = (res: any) => {
-  console.log(res);
-};
+message.loading()
+setTimeout(()=>{
+  //message.closeLoading()
+},1000 *10)
 </script>
 
 <template>
-  <a-space wrap style="padding: 25px">
-    <a-card class="card" hoverable>
-      <div class="info">
-        <span
-          :style="{ display: 'flex', alignItems: 'center', color: '#1D2129' }"
-        >
-          <a-avatar :size="28" style="margin-right: 8px">
-            <icon-link />
-          </a-avatar>
-          <a-typography-text>Username</a-typography-text>
-        </span>
-        <a-button type="text">{{ $t("连接") }}</a-button>
-      </div>
-    </a-card>
-    <div class="new-connect" @click="visible = true">
-      <icon-plus />
-    </div>
-  </a-space>
-
-  <a-modal
-    :cancel-text="$t('取消').toString()"
-    :ok-text="$t('确定').toString()"
-    draggable
-    v-model:visible="visible"
-    @cancel="handleCancel"
-    @before-ok="handleBeforeOk"
-  >
-
-    <template #title> {{ $t("创建") }}{{ $t("连接弹窗.标题") }} </template>
-    <a-form :model="form" ref="form" @submit="submitEvt">
-      <a-form-item field="host" :label="$t('连接弹窗.地址').toString()">
-        <a-input v-model="form.host" placeholder="127.0.0.1:6379" />
-      </a-form-item>
-      <a-form-item field="name" :label="$t('连接弹窗.数据库').toString()">
-        <a-input v-model="form.db" placeholder="1" />
-      </a-form-item>
-      <a-form-item field="name" :label="$t('连接弹窗.用户名').toString()">
-        <a-input
-          v-model="form.username"
-          :placeholder="$t('连接弹窗.用户名').toString()"
-        />
-      </a-form-item>
-      <a-form-item field="name" :label="$t('连接弹窗.密码').toString()">
-        <a-input
-          v-model="form.password"
-          :placeholder="$t('连接弹窗.密码').toString()"
-        />
-      </a-form-item>
-    </a-form>
-  </a-modal>
+  <div style="height: 1600px">
+    <el-button type="primary">good job</el-button>
+  </div>
 </template>
 
 <style scoped lang="scss">

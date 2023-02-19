@@ -37,7 +37,8 @@ export const i18nextPromise = i18next
   .use(Backend)
   .use(LanguageDetector)
   .init({
-    debug: true,
+    // @ts-ignore
+    debug: process.env.NODE_ENV === "development",
     ns: ["common"],
     fallbackLng: "zh",
     lowerCaseLng: true,

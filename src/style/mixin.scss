@@ -1,0 +1,294 @@
+@import "var";
+
+
+@mixin shadow {
+  box-shadow: $base-shadow;
+}
+
+@mixin border-radius {
+  border-radius: var(--el-border-radius-base);
+}
+
+@mixin border {
+  border: 1px solid var(--el-border-color);
+}
+
+@mixin layout-flex-row {
+  display: flex;
+  flex-direction: row;
+}
+
+@mixin layout-flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
+@mixin layout-justify-content-space-between {
+  justify-content: space-between;
+}
+
+@mixin layout-justify-content-space-around {
+  justify-content: space-around;
+}
+
+@mixin layout-justify-content-start {
+  justify-content: flex-end;
+}
+
+@mixin layout-justify-content-end {
+  justify-content: flex-start;
+}
+
+@mixin layout-justify-content-center {
+  justify-content: center;
+}
+
+@mixin layout-align-center {
+  align-items: center;
+}
+
+@mixin layout-align-start {
+  align-items: flex-start;
+}
+
+@mixin layout-align-end {
+  align-items: flex-end;
+}
+
+/**--row--**/
+@mixin flex-row-start-start {
+  @include layout-flex-row;
+  @include layout-justify-content-start;
+  @include layout-align-start;
+}
+
+@mixin flex-row-end-start {
+  @include layout-flex-row;
+  @include layout-justify-content-end;
+  @include layout-align-start;
+}
+
+@mixin flex-row-between-start {
+  @include layout-flex-row;
+  @include layout-justify-content-space-between;
+  @include layout-align-start;
+}
+
+@mixin flex-row-around-start {
+  @include layout-flex-row;
+  @include layout-justify-content-space-between;
+  @include layout-align-start;
+}
+
+@mixin flex-row-center-start {
+  @include layout-flex-row;
+  @include layout-justify-content-center;
+  @include layout-align-start;
+}
+
+@mixin flex-row-center-end {
+  @include layout-flex-row;
+  @include layout-justify-content-center;
+  @include layout-align-end;
+}
+
+@mixin flex-row-center-center {
+  @include layout-flex-row;
+  @include layout-justify-content-center;
+  @include layout-align-center ;
+}
+
+/**----**/
+@mixin flex-row-start-end {
+  @include layout-flex-row;
+  @include layout-justify-content-start;
+  @include layout-align-end;
+}
+
+@mixin flex-row-end-end {
+  @include layout-flex-row;
+  @include layout-justify-content-end;
+  @include layout-align-end;
+}
+
+@mixin flex-row-between-end {
+  @include layout-flex-row;
+  @include layout-justify-content-space-between;
+  @include layout-align-start;
+}
+
+@mixin flex-row-around-center {
+  @include layout-flex-row;
+  @include layout-justify-content-space-between;
+  @include layout-align-end;
+}
+
+/**----**/
+@mixin flex-row-start-center {
+  @include layout-flex-row;
+  @include layout-justify-content-start;
+  @include layout-align-center;
+}
+
+@mixin flex-row-end-center {
+  @include layout-flex-row;
+  @include layout-justify-content-end;
+  @include layout-align-center;
+}
+
+@mixin flex-row-between-center {
+  @include layout-flex-row;
+  @include layout-justify-content-space-between;
+  @include layout-align-center;
+}
+
+@mixin flex-row-around-center {
+  @include layout-flex-row;
+  @include layout-justify-content-space-between;
+  @include layout-align-center;
+}
+
+/**--column--**/
+@mixin flex-column-start-start {
+  @include layout-flex-column;
+  @include layout-justify-content-start;
+  @include layout-align-start;
+}
+
+@mixin flex-column-end-start {
+  @include layout-flex-column;
+  @include layout-justify-content-end;
+  @include layout-align-start;
+}
+
+@mixin flex-column-between-start {
+  @include layout-flex-column;
+  @include layout-justify-content-space-between;
+  @include layout-align-start;
+}
+
+@mixin flex-column-around-start {
+  @include layout-flex-column;
+  @include layout-justify-content-space-between;
+  @include layout-align-start;
+}
+
+/**----**/
+@mixin flex-column-start-end {
+  @include layout-flex-column;
+  @include layout-justify-content-start;
+  @include layout-align-end;
+}
+
+@mixin flex-column-end-end {
+  @include layout-flex-column;
+  @include layout-justify-content-end;
+  @include layout-align-end;
+}
+
+@mixin flex-column-between-end {
+  @include layout-flex-column;
+  @include layout-justify-content-space-between;
+  @include layout-align-start;
+}
+
+@mixin flex-column-around-center {
+  @include layout-flex-column;
+  @include layout-justify-content-space-between;
+  @include layout-align-end;
+}
+
+/**----**/
+@mixin flex-column-start-center {
+  @include layout-flex-column;
+  @include layout-justify-content-start;
+  @include layout-align-center;
+}
+
+@mixin flex-column-end-center {
+  @include layout-flex-column;
+  @include layout-justify-content-end;
+  @include layout-align-center;
+}
+
+@mixin flex-column-between-center {
+  @include layout-flex-column;
+  @include layout-justify-content-space-between;
+  @include layout-align-center;
+}
+
+@mixin flex-column-around-center {
+  @include layout-flex-column;
+  @include layout-justify-content-space-between;
+  @include layout-align-center;
+}
+
+@mixin flex-column-center-start {
+  @include layout-flex-column;
+  @include layout-justify-content-center;
+  @include layout-align-start;
+}
+
+@mixin flex-column-center-end {
+  @include layout-flex-column;
+  @include layout-justify-content-center;
+  @include layout-align-end;
+}
+
+@mixin flex-column-center-center {
+  @include layout-flex-column;
+  @include layout-justify-content-center;
+  @include layout-align-center ;
+}
+
+/**--font-size--**/
+@mixin fs12 {
+  font-size: 12px;
+}
+
+@mixin fs14 {
+  font-size: 12px;
+}
+
+@mixin fs16 {
+  font-size: 16px;
+}
+
+@mixin fs18 {
+  font-size: 18px;
+}
+
+@mixin fs20 {
+  font-size: 20px;
+}
+
+/**排版**/
+@mixin pb-title {
+  @include fs16
+}
+
+@mixin pb-content {
+  @include fs14
+}
+
+@mixin pb-menu-0 {
+  @include fs20
+}
+
+@mixin pb-menu-1 {
+  @include fs16
+}
+
+@mixin pb-menu-2 {
+  @include fs14
+}
+
+/**--行为--**/
+@mixin bh-btn {
+  cursor: pointer;
+  user-select: none;
+  transition: 60ms ease-in-out;
+  &:active {
+    opacity: 0.2;
+  }
+}

@@ -1,0 +1,42 @@
+@import "var";
+@import "mixin";
+
+html {
+  font-family: "Microsoft YaHei", "sans-serif", "Yuanti SC Reguar", "Helvetica", "Heiti SC";
+}
+
+#_loading_dom {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  background: transparent;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  z-index: 1000;
+  user-select: none;
+
+  ._loading_tip {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: var(--el-bg-color-overlay);
+    padding: 8px 15px;
+    margin-top: 15px;
+    @include shadow;
+    @include border-radius;
+    @include border;
+
+    ._loading_icon {
+      font-size: 14px;
+    }
+
+    ._loading_txt {
+      font-size: 12px;
+      margin-left: 4px;
+      color: var(--color);
+    }
+  }
+}
