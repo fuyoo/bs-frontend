@@ -1,14 +1,16 @@
 <script setup lang="ts">
-import { lang } from "@/i18n";
-import { ref, getCurrentInstance, reactive } from "vue";
+
+import { ref, getCurrentInstance } from "vue";
+
+
 import message from "@/utils/message";
 const _this = getCurrentInstance();
 let visible = ref(false);
 const form = ref({
-  host:'',
-  db:'',
-  username:'',
-  password:''
+  host: "",
+  db: "",
+  username: "",
+  password: "",
 });
 
 const handleCancel = () => {
@@ -18,26 +20,27 @@ const handleCancel = () => {
 
 const handleBeforeOk = (done: any) => {
   //@ts-ignore
-  message.warning("error")
+  message.warning("error");
   done(false);
 };
 const submitEvt = (res: any) => {
   console.log(res);
 };
-
 </script>
 
 <template>
   <a-space wrap style="padding: 25px">
     <a-card class="card" hoverable>
       <div class="info">
-        <span :style="{ display: 'flex', alignItems: 'center', color: '#1D2129' }">
+        <span
+          :style="{ display: 'flex', alignItems: 'center', color: '#1D2129' }"
+        >
           <a-avatar :size="28" style="margin-right: 8px">
             <icon-link />
           </a-avatar>
           <a-typography-text>Username</a-typography-text>
         </span>
-        <a-button type="text">{{ lang("connect") }}</a-button>
+        <a-button type="text">{{ $t("连接") }}</a-button>
       </div>
     </a-card>
     <div class="new-connect" @click="visible = true">
@@ -46,31 +49,33 @@ const submitEvt = (res: any) => {
   </a-space>
 
   <a-modal
-    :cancel-text="lang('cancel')"
-    :ok-text="lang('ok') "
+    :cancel-text="$t('取消').toString()"
+    :ok-text="$t('确定').toString()"
     draggable
     v-model:visible="visible"
     @cancel="handleCancel"
     @before-ok="handleBeforeOk"
   >
-    <template #title>
-      {{lang('create') }}{{ lang('connectionDialog.title') }}
-    </template>
+
+    <template #title> {{ $t("创建") }}{{ $t("连接弹窗.标题") }} </template>
     <a-form :model="form" ref="form" @submit="submitEvt">
-      <a-form-item
-        field="host"
-        :label="lang('connectionDialog.formLabels.host')"
-      >
-        <a-input  v-model="form.host" placeholder="127.0.0.1:6379" />
+      <a-form-item field="host" :label="$t('连接弹窗.地址').toString()">
+        <a-input v-model="form.host" placeholder="127.0.0.1:6379" />
       </a-form-item>
-      <a-form-item field="name" :label="lang('connectionDialog.formLabels.db')">
+      <a-form-item field="name" :label="$t('连接弹窗.数据库').toString()">
         <a-input v-model="form.db" placeholder="1" />
       </a-form-item>
-      <a-form-item field="name" :label="lang('connectionDialog.formLabels.username')">
-        <a-input v-model="form.username" :placeholder="lang('connectionDialog.formLabels.username')" />
+      <a-form-item field="name" :label="$t('连接弹窗.用户名').toString()">
+        <a-input
+          v-model="form.username"
+          :placeholder="$t('连接弹窗.用户名').toString()"
+        />
       </a-form-item>
-      <a-form-item field="name" :label="lang('connectionDialog.formLabels.password')">
-        <a-input v-model="form.password" :placeholder="lang('connectionDialog.formLabels.password')" />
+      <a-form-item field="name" :label="$t('连接弹窗.密码').toString()">
+        <a-input
+          v-model="form.password"
+          :placeholder="$t('连接弹窗.密码').toString()"
+        />
       </a-form-item>
     </a-form>
   </a-modal>
