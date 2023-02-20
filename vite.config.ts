@@ -1,49 +1,48 @@
-import {fileURLToPath, URL} from "node:url";
+import { fileURLToPath, URL } from "node:url";
 import path from "node:path";
-import {defineConfig} from "vite";
+import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
 import vueJsx from "@vitejs/plugin-vue-jsx";
 
-import AutoImport from "unplugin-auto-import/vite"
+import AutoImport from "unplugin-auto-import/vite";
 import Icons from "unplugin-icons/vite";
 import IconsResolver from "unplugin-icons/resolver";
-import {ElementPlusResolver} from "unplugin-vue-components/resolvers";
+import { ElementPlusResolver } from "unplugin-vue-components/resolvers";
 import Components from "unplugin-vue-components/vite";
-const pathSrc = path.resolve(__dirname, 'src')
+const pathSrc = path.resolve(__dirname, "src");
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
     vue(),
     vueJsx(),
     AutoImport({
-      imports: ['vue'],
+      imports: ["vue"],
       resolvers: [
         ElementPlusResolver(),
         // Auto import icon components
         // 自动导入图标组件
         IconsResolver({
-          prefix: 'Icon',
+          prefix: "Icon",
         }),
       ],
-      dts: path.resolve(pathSrc, 'components.d.ts'),
+      dts: path.resolve(pathSrc, "components.d.ts"),
     }),
     Components({
       resolvers: [
         // Auto register icon components
         // 自动注册图标组件
         IconsResolver({
-          enabledCollections: ['ep'],
+          enabledCollections: ["ep"],
         }),
         // Auto register Element Plus components
         // 自动导入 Element Plus 组件
         ElementPlusResolver(),
       ],
-      dts: path.resolve(pathSrc, 'components.d.ts'),
+      dts: path.resolve(pathSrc, "components.d.ts"),
     }),
     Icons({
       autoInstall: true,
     }),
-
   ],
   server: {
     strictPort: true,

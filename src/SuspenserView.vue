@@ -15,7 +15,7 @@ import App from "./App.vue";
           <div></div>
         </div>
         <span class="tips">
-         loading&nbsp;
+          loading&nbsp;
           <span>.</span>
           <span>.</span>
           <span>.</span>

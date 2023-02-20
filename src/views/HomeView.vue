@@ -1,27 +1,34 @@
 <script setup lang="ts">
-
-import {ref, getCurrentInstance} from "vue";
-
+import { ref } from "vue";
+import { invoke } from "@tauri-apps/api";
 import message from "@/utils/message";
-const _this = getCurrentInstance();
-let visible = ref(false);
-const form = ref({
-  host: "",
-  db: "",
-  username: "",
-  password: "",
-});
-
-message.loading()
-setTimeout(()=>{
-  //message.closeLoading()
-},1000 *10)
+let list: import("vue").Ref<any[]> = ref([]);
+const fetch = () => {
+  message.loading();
+  invoke("routes", {
+    path: "/connection/list",
+    payload: JSON.stringify({ a: "123" }),
+  })
+    .then((res: any) => {
+      const data = JSON.parse(res);
+      data.data.forEach((item: any) => {
+        list.value.push(item);
+      });
+    })
+    .finally(() => message.closeLoading());
+};
+fetch()
 </script>
 
 <template>
-  <div style="height: 1600px">
-    <el-button type="primary">good job</el-button>
-  </div>
+  <el-button @click="fetch" type="primary">fetch</el-button>
+    <ul v-for="item in list" :key="item.id">
+      <li>id: {{ item.id }}</li>
+      <li>name: {{ item.name }}</li>
+      <li>address: {{ item.address }}</li>
+      <li>username: {{ item.username }}</li>
+      <li>password: {{ item.password }}</li>
+    </ul>
 </template>
 
 <style scoped lang="scss">
