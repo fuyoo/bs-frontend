@@ -1,0 +1,13 @@
+{
+  "连接": {
+    "连接名": {
+      "必须": "name is required!"
+    },
+    "地址":  {
+      "必须": "address is required!"
+    },
+    "端口":  {
+      "必须": "port is required!"
+    }
+  }
+}

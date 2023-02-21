@@ -1,8 +1,23 @@
 {
+  "语言": "language",
   "查找": "search",
   "登录": "login",
   "删除": "delete",
   "添加": "add",
   "编辑": "edit",
-  "注册": "register"
+  "注册": "register",
+  "连接": "connect",
+  "取消": "cancel",
+  "确定": "ok",
+  "创建": "create",
+  "新建": "new",
+  "加载中": "loading...",
+  "提交": "submit",
+  "连接弹窗": {
+    "标题": "connection",
+    "地址": "address",
+    "数据库": "database",
+    "用户名": "username",
+    "密码": "password"
+  }
 }

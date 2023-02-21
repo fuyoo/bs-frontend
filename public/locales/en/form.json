@@ -1,0 +1,9 @@
+{
+  "连接": {
+    "连接名": "name",
+    "地址": "address",
+    "端口": "port",
+    "用户名": "username",
+    "密码": "password"
+  }
+}
