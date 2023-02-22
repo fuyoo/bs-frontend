@@ -26,7 +26,7 @@
     </el-form>
     <template #footer>
       <span class="dialog-footer">
-        <el-button @click="visible = false">{{$t("取消")}}</el-button>
+        <el-button @click="visible = false">{{ $t("取消") }}</el-button>
         <el-button type="primary" @click="okFn">
           {{ $t("提交") }}
         </el-button>
@@ -90,11 +90,15 @@ const clearFn = () => {
     });
   }
 };
+const emits = defineEmits<{
+  (event: 'change'): void
+}>();
 const okFn = () => {
   invoke("/connection/add", form.value)
-      .then(res => {
-        message.success(res.msg)
-        console.log(res);
+      .then((res: any) => {
+        message.success(res.msg);
+        visible.value = false;
+        emits("change");
       });
 };
 </script>

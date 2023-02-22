@@ -13,6 +13,9 @@
   "新建": "new",
   "加载中": "loading...",
   "提交": "submit",
+  "主页": "Home",
+  "设置": "Setting",
+  "反馈": "Feedback",
   "连接弹窗": {
     "标题": "connection",
     "地址": "address",

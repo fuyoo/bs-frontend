@@ -1,1 +1,11 @@
+@import "var-dark";
 $base-shadow: 4px 5px 5px  -2px #0002;
+:root {
+  --bg-color-tab: #eee;
+  --bg-color-tab-bar: #ddd;
+  --bg-color-tab-bar-active:  #fff;
+  --bg-color-tab-bar-active-text:  #000;
+  --bg-color-tab-bar-inactive-black:  #0009;
+  --text-color-black: #000;
+  --text-color-white: #fff;
+}
