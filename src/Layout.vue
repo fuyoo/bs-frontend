@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import TabBar from "@/components/TabBar/TabBar.vue";
 import {HomeFilled} from "@element-plus/icons-vue";
+import ConnectionView from "@/views/ConnectionView.vue";
 </script>
 
 <template>
@@ -17,15 +18,17 @@ import {HomeFilled} from "@element-plus/icons-vue";
     </template>
     <div class="view">
       <el-scrollbar>
-        <keep-alive>
-          <RouterView/>
-        </keep-alive>
+        <router-view v-slot="{ Component }">
+          <keep-alive>
+            <component :is="Component" />
+          </keep-alive>
+        </router-view>
       </el-scrollbar>
     </div>
     <template #connection>
       <div class="view">
         <el-scrollbar>
-          <RouterView/>
+          <ConnectionView />
         </el-scrollbar>
       </div>
     </template>

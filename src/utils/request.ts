@@ -17,7 +17,10 @@ export default (path: string, payload?: object) => {
           resolve(data);
         }
       })
-      .catch(err => reject(err))
+      .catch((err:any) => {
+        message.error(err.toString())
+        reject(err)
+      })
       .finally(() => {
         message.closeLoading();
       });

@@ -1,11 +1,26 @@
-@import "var-dark";
 $base-shadow: 4px 5px 5px  -2px #0002;
 :root {
   --bg-color-tab: #eee;
   --bg-color-tab-bar: #ddd;
-  --bg-color-tab-bar-active:  #fff;
-  --bg-color-tab-bar-active-text:  #000;
-  --bg-color-tab-bar-inactive-black:  #0009;
+  --bg-color-tab-bar-active: #fff;
+  --bg-color-tab-bar-active-text: #000;
+  --bg-color-tab-bar-inactive-black: #0009;
   --text-color-black: #000;
+  --text-color-black-hover: #0008;
   --text-color-white: #fff;
+  --text-color-white-hover: #fff8;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg-color-tab: #24182f;
+    --bg-color-tab-bar: #352543;
+    --bg-color-tab-bar-active: #141414;
+    --bg-color-tab-bar-active-text: #fff;
+    --bg-color-tab-bar-inactive-black: #fff9;
+    --text-color-black: #fff;
+    --text-color-black-hover: #fff8;
+    --text-color-white: #000;
+    --text-color-white-hover: #0008;
+  }
 }

@@ -4,24 +4,24 @@
     <el-form :model="form" ref="formRef" label-width="80px">
       <el-form-item prop="name" :rules="{required:true,message:$t('validation:连接.连接名.必须')}"
                     :label="$t('form:连接.连接名')">
-        <el-input :placeholder="$t('form:连接.连接名')" v-model="form.name" clearable/>
+        <el-input autocorrect="off" :placeholder="$t('form:连接.连接名')" v-model="form.name" clearable/>
       </el-form-item>
       <el-form-item prop="address"
                     :rules="{required:true,message:$t('validation:连接.地址.必须')}"
                     :label="$t('form:连接.地址')">
-        <el-input :placeholder="$t('form:连接.地址')" v-model="form.address" clearable/>
+        <el-input autocorrect="off" :placeholder="$t('form:连接.地址')" v-model="form.address" clearable/>
       </el-form-item>
       <el-form-item
           prop="port"
           :rules="{required:true,message:$t('validation:连接.端口.必须')}"
           :label="$t('form:连接.端口')">
-        <el-input :placeholder="$t('form:连接.端口')" v-model="form.port" clearable/>
+        <el-input autocorrect="off" :placeholder="$t('form:连接.端口')" v-model="form.port" clearable/>
       </el-form-item>
       <el-form-item :label="$t('form:连接.用户名')">
-        <el-input :placeholder="$t('form:连接.用户名')" v-model="form.username" clearable/>
+        <el-input autocorrect="off" :placeholder="$t('form:连接.用户名')" v-model="form.username" clearable/>
       </el-form-item>
       <el-form-item :label="$t('form:连接.密码')">
-        <el-input :placeholder="$t('form:连接.密码')" v-model="form.password" show-password clearable/>
+        <el-input  autocorrect="off" :placeholder="$t('form:连接.密码')" v-model="form.password" show-password clearable/>
       </el-form-item>
     </el-form>
     <template #footer>
@@ -36,9 +36,9 @@
 </template>
 
 <script setup lang="ts">
-import {computed, reactive, ref} from "vue";
+import {nextTick, onMounted, ref} from "vue";
 import {t} from "i18next";
-import invoke from "@/utils/invoke";
+import request from "@/utils/request";
 import message from "@/utils/message";
 
 // dialog mode define
@@ -66,6 +66,7 @@ defineExpose({
   edit(data: any) {
     mode.value = Mode.Edit;
     visible.value = true;
+    offAutoCorrect()
     tittle.value = `${t("编辑")} ${t("连接")}`;
     form.value = (data);
   },
@@ -73,6 +74,7 @@ defineExpose({
     mode.value = Mode.Add;
     tittle.value = `${t("创建")} ${t("连接")}`;
     visible.value = true;
+    offAutoCorrect()
   }
 });
 const clearFn = () => {
@@ -94,13 +96,24 @@ const emits = defineEmits<{
   (event: 'change'): void
 }>();
 const okFn = () => {
-  invoke("/connection/add", form.value)
+  request("/connection/add", form.value)
       .then((res: any) => {
         message.success(res.msg);
         visible.value = false;
         emits("change");
-      });
+      })
 };
+const offAutoCorrect = () => {
+  nextTick(()=>{
+    const inputs = document.querySelectorAll("input")
+    inputs.forEach((item:Element)=> {
+      item.setAttribute("autocorrect","off")
+    });
+    console.log(inputs)
+  });
+}
+
+
 </script>
 
 <style scoped lang="scss">

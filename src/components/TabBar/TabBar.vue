@@ -7,28 +7,35 @@ import type {Ref} from "vue";
 import {useTabStore} from "@/stores/tab";
 import router from "@/router";
 import {useRoute} from "vue-router";
-const route = useRoute()
+
+const route = useRoute();
 const tabStore = useTabStore();
-const emits = defineEmits<{
-  (event: 'delete'): void,
-  (event: 'choose', data: TabProps | number): void
-}>();
-const active = ref(-1);
-const closeFn = (index: number) => {
-  tabStore.remove(index);
-  emits('delete');
+
+enum StaticPage {
+  Home = 'home',
+  Setting = "setting",
+}
+
+const closeFn = (name: string) => {
+  tabStore.remove(name);
 };
-const chooseFn = (index: number) => {
-  active.value = index;
-  if (index === -1) {
-    return router.push("/home");
+const chooseFn = (id: string, noMore?: boolean) => {
+  tabStore.focus(id);
+  if (noMore !== true) {
+    tabStore.moveToStart(id);
+    moreList.value = [];
+    getMoreListData();
   }
-  if (index === -2) {
-    return router.push("/setting");
+  switch (id) {
+    case StaticPage.Home:
+      router.push("/home");
+      break;
+    case StaticPage.Setting:
+      router.push("/setting");
+      break;
+    default:
+      /*empty*/
   }
-  return router.push({
-    path: "/connection/" + tabStore.tabs[index].id
-  });
 };
 let showMore = ref(false);
 let moreList: Ref<TabProps[]> = ref([]);
@@ -67,32 +74,32 @@ getMoreListData();
     <div class="tab">
       <div class="tab-l">
         <slot name="tab"></slot>
-        <div @click="chooseFn(-1)" class="bar bar-default" :class="{'bar-active':active === -1}">
+        <div @click="chooseFn(StaticPage.Home,true)" class="bar bar-default"
+             :class="{'bar-active':route.path.includes( StaticPage.Home)}">
           <slot name="bar">default</slot>
         </div>
         <div data-db class="tab-db">
-          <div data-bar :title="bar.name" @click="chooseFn(index)" class="bar" v-for="(bar,index) in tabStore.tabs"
-               :class="{'bar-active':active === index}"
+          <div data-bar :title="bar.name" @click="chooseFn(bar.id,true)" class="bar"
+               v-for="(bar,index) in tabStore.tabs"
+               :class="{'bar-active':bar.active}"
                :key="index">
             <span>{{ bar.name }}</span>
-            <el-icon class="icon-close" @click.stop="closeFn">
+            <el-icon class="icon-close" @click.stop="closeFn(bar.id)">
               <Close/>
             </el-icon>
           </div>
           <div class="more" v-show="showMore">
             <el-dropdown max-height="280" @command="chooseFn">
-              <el-icon class="el-icon--right">
+              <el-icon>
                 <arrow-down/>
               </el-icon>
               <template #dropdown>
                 <el-dropdown-menu>
-                  <el-dropdown-item :command="k + overflowStart" :divided="k > 0" v-for="(item,k) in moreList" :id="k">
+                  <el-dropdown-item :command="tab.id" :divided="k > 0" v-for="(tab,k) in moreList" :id="k">
                     {{
-                      item.name
-                    }}---{{
-                      item.id
+                      tab.name
                     }}
-                    <el-icon class="more-close" @click.stop="closeFn(overflowStart + k)">
+                    <el-icon class="more-close" @click.stop="closeFn(tab.id)">
                       <Close/>
                     </el-icon>
                   </el-dropdown-item>
@@ -103,15 +110,15 @@ getMoreListData();
         </div>
       </div>
       <div class="tab-r">
-        <div @click="open('https://github.com/fuyoo/bs-redis-desktop-client/issues')" class="bar bar-default"
-             :class="{'bar-active':active === -2}">
+        <div @click="open('https://github.com/fuyoo/bs-redis-desktop-client/issues')" class="bar bar-default">
           <slot name="feedback">
             <el-icon>
               <Document/>
             </el-icon>&nbsp;{{ $t("反馈") }}
           </slot>
         </div>
-        <div @click="chooseFn(-3)" class="bar bar-default" :class="{'bar-active':active === -3}">
+        <div @click="chooseFn(StaticPage.Setting)" class="bar bar-default"
+             :class="{'bar-active': route.path.includes( StaticPage.Setting )}">
           <slot name="set">
             <el-icon>
               <Setting/>
@@ -123,7 +130,7 @@ getMoreListData();
     <div v-show="route.path.indexOf('/connection') === -1">
       <slot></slot>
     </div>
-    <div v-show="k === active" v-for="(item,k) in tabStore.tabs" :key="k">
+    <div v-show="tab.active" v-for="tab in tabStore.tabs" :key="tab.id">
       <slot name="connection"></slot>
     </div>
   </div>
@@ -149,7 +156,7 @@ getMoreListData();
         margin-left: 4px;
         @include flex-row-start-end;
         padding-right: 50px;
-        width: calc(100vw - 180px - 240px);
+        width: calc(100vw - 180px - 260px);
         border-radius: 4px 4px 0 0;
         overflow: hidden;
         position: relative;
@@ -170,6 +177,7 @@ getMoreListData();
             padding: 0;
             width: 32px;
             height: 32px;
+            outline: none;
           }
 
           :deep(.more-close) {

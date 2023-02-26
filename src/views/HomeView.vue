@@ -1,17 +1,17 @@
 <script setup lang="ts">
 import {ref} from "vue";
 import ConnectionDialog from "@/components/ConnectionDialog.vue";
-import invoke from "@/utils/invoke";
-import i18next from "i18next";
+import request from "@/utils/request";
 import {useTabStore} from "@/stores/tab";
 import router from "@/router";
 import type {TabProps} from "@/components/TabBar/type";
+import {Plus,Refrigerator,Delete,EditPen, SwitchButton} from "@element-plus/icons-vue";
 
 const tabStore = useTabStore();
 let connectionDialogRef: import("vue").Ref<any> = ref(null);
 let list: import("vue").Ref<any[]> = ref([]);
 const fetch = () => {
-  invoke("/connection/list", {})
+  request("/connection/list", {})
       .then((res: any) => {
         list.value = res.data;
       });
@@ -22,96 +22,117 @@ const addFn = () => {
     connectionDialogRef.value.add();
   }
 };
-const lng = ref(i18next.language);
-const langs = [{
-  key: "zh-cn",
-  name: "简体中文"
-}, {
-  key: "en",
-  name: "english"
-}];
-const setLngFn = (data: string) => {
-  i18next.changeLanguage(data);
-};
-const editFn = (data: object) => {
+const editFn = (data: TabProps) => {
   if (connectionDialogRef.value) {
     connectionDialogRef.value.edit(data);
   }
 };
 const connect = (data: TabProps) => {
-  tabStore.append(data)
   router.push({
     path: "/connection/" + data.id
-  });
+  })
+      .then(() => {
+        console.log(tabStore.append(data));
+      });
 };
+const deleteFn = (data:TabProps) => {
+  console.log(tabStore.remove(data.id));
+}
 </script>
 
 <template>
-  <div style="padding: 15px ">
-    <el-space>
-      <el-button @click="fetch" type="primary" size="small">fetch</el-button>
-    </el-space>
-    <el-space>
-      <el-button @click="tabStore.append({id:Math.random().toString(36).slice(2),name:Math.random().toString(36).slice(2)})" type="primary" size="small">add
-        tab
-      </el-button>
-    </el-space>
-    <el-space>
-      <el-button @click="addFn" type="primary" size="small">{{ $t("创建") }}</el-button>
-    </el-space>
-    <el-space>
-      {{ $t("语言") }}
-      <el-select v-model="lng" @change="setLngFn">
-        <el-option v-for="item in langs" :label="item.name" :key="item.key" :value="item.key"></el-option>
-      </el-select>
-    </el-space>
-    <ul v-for="item in list" :key="item.id">
-      <li>id: {{ item.id }}</li>
-      <li>name: {{ item.name }}</li>
-      <li>address: {{ item.address }}</li>
-      <li>username: {{ item.username }}</li>
-      <li>password: {{ item.password }}</li>
-      <p>
-        <el-button size="small" type="primary" @click="editFn(item)">{{ $t("编辑") }}</el-button>
-        <el-button size="small" type="primary" @click="connect(item)">{{ $t("连接") }}</el-button>
-      </p>
-    </ul>
+  <div class="_db">
+    <div class="_db_i _db_add" @click="addFn">
+      <el-icon size="80">
+        <Plus/>
+      </el-icon>
+      <div class="_db_info">
+        <el-icon size="16">
+          <Plus/>
+        </el-icon>&nbsp;{{$t("创建")}}
+      </div>
+    </div>
+    <div class="_db_i" v-for="item in list" :key="item.id">
+      <div class="_db_i_inner">
+        <el-icon size="35"><Refrigerator /></el-icon>
+        <p>{{item.name}}</p>
+      </div>
+      <div class="_db_info">
+        <p class="_db_info_name">{{item.name}}</p>
+        <p class="_db_info_act">
+          <el-button circle :icon="SwitchButton" type="success" @click="connect(item)"></el-button>
+          <el-button circle :icon="EditPen" @click="editFn(item)" type="warning"></el-button>
+          <el-button circle :icon="Delete" @click="deleteFn(item)" type="danger"></el-button>
+        </p>
+      </div>
+    </div>
   </div>
   <ConnectionDialog @change="fetch" ref="connectionDialogRef"/>
 </template>
 
 <style scoped lang="scss">
-.card {
-  width: 360px;
-  margin-bottom: 20px;
-}
+@import "@/style/mixin.scss";
 
-.info {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
+._db {
+  margin-left: -25px;
+  @include flex-row-start-start;
+  flex-wrap: wrap;
+  padding: 25px;
 
-.new-connect {
-  width: 64px;
-  height: 64px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 20px;
-  border: 1px solid var(--color-neutral-3);
-  margin-bottom: 20px;
-  color: var(--color-neutral-3);
-  cursor: pointer;
-  transition: 168ms all;
-  user-select: none;
-
-  &:hover {
-    box-shadow: 0 4px 10px rgb(var(--gray-2));
+  ._db_i {
+    width: 160px;
+    height: calc(160px / 0.818);
+    background: #0001;
+    margin-left: 25px;
+    margin-bottom: 25px;
+    @include border-radius;
+    @include border;
+    @include flex-row-center-center;
+    cursor: pointer;
+    overflow: hidden;
+    position: relative;
+    ._db_i_inner{
+      margin: 15px;
+      @include flex-column-center-center;
+      p{
+        width: 100%;
+        word-break: break-all;
+      }
+    }
+    ._db_info{
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      @include flex-column-center-center;
+      transition: 0.168s;
+      transform: translate3d(0,110%,0);
+      background: var(--el-bg-color);
+      p{
+        padding: 0;
+        margin: 0;
+      }
+      ._db_info_name{
+        padding: 20px;
+        word-break: break-all;
+      }
+      ._db_info_act {
+        text-align: center;
+        align-items: center;
+      }
+    }
+    &:hover ._db_info {
+      transform: translate3d(0,0,0);
+    }
   }
 
-  &:active {
-    opacity: 0.6;
+  &_add {
+    @include flex-row-center-center;
+    color: var(--text-color-black);
+    &:hover{
+    color: var(--text-color-black-hover);
+  }
   }
 }
 </style>
