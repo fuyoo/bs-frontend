@@ -37,7 +37,7 @@ const connect = (data: TabProps) => {
 };
 const deleteFn = (data: TabProps) => {
   tabStore.close(data.id);
-  request("/connection/delete", {})
+  request("/connection/delete", {id:data.id})
     .then((res: any) => {
       console.log(res);
     })
