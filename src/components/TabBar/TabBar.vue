@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type {TabProps} from "@/components/TabBar/type";
 import {Close, ArrowDown, Setting, Document} from "@element-plus/icons-vue";
-import {open} from '@tauri-apps/api/shell';
+import {open} from "@tauri-apps/api/shell";
 import {ref} from "vue";
 import type {Ref} from "vue";
 import {useTabStore} from "@/stores/tab";
@@ -12,12 +12,18 @@ const route = useRoute();
 const tabStore = useTabStore();
 
 enum StaticPage {
-  Home = 'home',
+  Home = "home",
   Setting = "setting",
 }
 
-const closeFn = (name: string) => {
-  tabStore.remove(name);
+const closeFn = (id: string) => {
+  let data = tabStore.close(id);
+  // focus the new tab
+  if (data && data.id) {
+    tabStore.focus(data.id);
+  } else {
+    router.replace("/home");
+  }
 };
 const chooseFn = (id: string, noMore?: boolean) => {
   tabStore.focus(id);
@@ -34,7 +40,7 @@ const chooseFn = (id: string, noMore?: boolean) => {
       router.push("/setting");
       break;
     default:
-      /*empty*/
+    /*empty*/
   }
 };
 let showMore = ref(false);
@@ -85,13 +91,13 @@ getMoreListData();
                :key="index">
             <span>{{ bar.name }}</span>
             <el-icon class="icon-close" @click.stop="closeFn(bar.id)">
-              <Close/>
+              <Close />
             </el-icon>
           </div>
           <div class="more" v-show="showMore">
             <el-dropdown max-height="280" @command="chooseFn">
               <el-icon>
-                <arrow-down/>
+                <arrow-down />
               </el-icon>
               <template #dropdown>
                 <el-dropdown-menu>
@@ -100,7 +106,7 @@ getMoreListData();
                       tab.name
                     }}
                     <el-icon class="more-close" @click.stop="closeFn(tab.id)">
-                      <Close/>
+                      <Close />
                     </el-icon>
                   </el-dropdown-item>
                 </el-dropdown-menu>
@@ -113,7 +119,7 @@ getMoreListData();
         <div @click="open('https://github.com/fuyoo/bs-redis-desktop-client/issues')" class="bar bar-default">
           <slot name="feedback">
             <el-icon>
-              <Document/>
+              <Document />
             </el-icon>&nbsp;{{ $t("反馈") }}
           </slot>
         </div>
@@ -121,7 +127,7 @@ getMoreListData();
              :class="{'bar-active': route.path.includes( StaticPage.Setting )}">
           <slot name="set">
             <el-icon>
-              <Setting/>
+              <Setting />
             </el-icon>&nbsp;{{ $t("设置") }}
           </slot>
         </div>

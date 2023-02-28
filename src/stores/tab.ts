@@ -24,7 +24,7 @@ export const useTabStore = defineStore("tab", () => {
       tabs.value = JSON.parse(localStorage.getItem("tabs") || "[]");
     }
   };
-  init()
+  init();
   /**
    * tab聚焦
    * @param id
@@ -58,18 +58,16 @@ export const useTabStore = defineStore("tab", () => {
    * remove a tab item
    * @param id
    */
-  const remove = (id: string) => {
+  const close = (id: string): TabProps | null => {
     const index = indexOf(id);
     if (index > -1) {
       tabs.value.splice(index, 1);
       // focus to the last item
       if (tabs.value.length > 0) {
-        const data = tabs.value[tabs.value.length - 1];
-        focus(data.id);
-      } else {
-        router.replace("/home");
+        return tabs.value[tabs.value.length - 1];
       }
     }
+    return null;
   };
   /**
    * move to tab item to the list start
@@ -97,5 +95,5 @@ export const useTabStore = defineStore("tab", () => {
     }
     return -1;
   };
-  return {tabs, append, remove, focus, moveToStart};
+  return {tabs, append, close, focus, moveToStart};
 });
