@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import {ref} from "vue";
+import type {Ref} from "vue";
 import ConnectionDialog from "@/components/ConnectionDialog.vue";
 import request from "@/utils/request";
 import {useTabStore} from "@/stores/tab";
@@ -8,8 +9,8 @@ import type {TabProps} from "@/components/TabBar/type";
 import {Plus, Refrigerator, Delete, EditPen, SwitchButton} from "@element-plus/icons-vue";
 
 const tabStore = useTabStore();
-let connectionDialogRef: import("vue").Ref<any> = ref(null);
-let list: import("vue").Ref<any[]> = ref([]);
+let connectionDialogRef: Ref = ref(null);
+let list: Ref<any[]> = ref([]);
 const fetch = () => {
   request("/connection/list", {})
     .then((res: any) => {
@@ -24,7 +25,7 @@ const addFn = () => {
 };
 const editFn = (data: TabProps) => {
   if (connectionDialogRef.value) {
-    connectionDialogRef.value.edit(data);
+    connectionDialogRef.value.edit({...data});
   }
 };
 const connect = (data: TabProps) => {
@@ -37,7 +38,7 @@ const connect = (data: TabProps) => {
 };
 const deleteFn = (data: TabProps) => {
   tabStore.close(data.id);
-  request("/connection/delete", {id:data.id})
+  request("/connection/delete", {id: data.id})
     .then((res: any) => {
       console.log(res);
     })
@@ -119,6 +120,7 @@ const deleteFn = (data: TabProps) => {
       width: 100%;
       height: 100%;
       @include flex-column-center-center;
+      @include border-radius;
       transition: 0.168s;
       transform: translate3d(0, 110%, 0);
       background: var(--el-bg-color);
@@ -131,6 +133,7 @@ const deleteFn = (data: TabProps) => {
       ._db_info_name {
         padding: 20px;
         word-break: break-all;
+        text-align: center;
       }
 
       ._db_info_act {

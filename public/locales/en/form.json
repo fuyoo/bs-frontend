@@ -4,6 +4,17 @@
     "地址": "address",
     "端口": "port",
     "用户名": "username",
-    "密码": "password"
+    "密码": "password",
+    "集群": "cluster",
+    "节点": "node",
+    "代理": {
+      "SSH代理": "SSH Proxy",
+      "认证类型": "Auth",
+      "密码": "password",
+      "文件": "key file",
+      "地址": "address",
+      "用户": "username",
+      "请选择文件": "please select a key file"
+    }
   }
 }

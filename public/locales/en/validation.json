@@ -3,11 +3,26 @@
     "连接名": {
       "必须": "name is required!"
     },
-    "地址":  {
+    "地址": {
       "必须": "address is required!"
     },
-    "端口":  {
+    "端口": {
       "必须": "port is required!"
+    },
+    "集群": {
+      "必须": "address is required！"
+    },
+    "代理密码": {
+      "必须": "password is required！"
+    },
+    "代理地址": {
+      "必须": "address is required!"
+    },
+    "代理用户": {
+      "必须": "username is required!"
+    },
+    "代理密钥文件": {
+      "必须": "please choose the key file!"
     }
   }
 }
