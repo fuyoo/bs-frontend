@@ -1,12 +1,12 @@
 <template>
   <el-dialog @closed="clearFn" style="width: 380px" :close-on-click-modal="false" v-model="visible" :title="tittle"
-             width="30%" draggable>
+             width="30%">
     <el-form :model="form" ref="formRef" label-width="80px">
       <el-form-item prop="name" :rules="{required:true,message:$t('validation:连接.连接名.必须')}"
                     :label="$t('form:连接.连接名')">
         <el-input autocorrect="off" :placeholder="$t('form:连接.连接名')" v-model="form.name" clearable />
       </el-form-item>
-      <div v-if="form.cluster === false">
+      <div v-if="!form.cluster">
         <el-form-item prop="address"
                       :rules="{required:true,message:$t('validation:连接.地址.必须')}"
                       :label="$t('form:连接.地址')">
@@ -16,7 +16,14 @@
           prop="port"
           :rules="{required:true,message:$t('validation:连接.端口.必须')}"
           :label="$t('form:连接.端口')">
-          <el-input autocorrect="off" :placeholder="$t('form:连接.端口')" v-model="form.port" clearable />
+          <el-input type="number" autocorrect="off" :placeholder="$t('form:连接.端口')" v-model="form.port" clearable />
+        </el-form-item>
+        <el-form-item :label="$t('form:连接.用户名')">
+          <el-input autocorrect="off" :placeholder="$t('form:连接.用户名')" v-model="form.username" clearable />
+        </el-form-item>
+        <el-form-item :label="$t('form:连接.密码')">
+          <el-input autocorrect="off" :placeholder="$t('form:连接.密码')" v-model="form.password" show-password
+                    clearable />
         </el-form-item>
       </div>
       <el-form-item :label="$t('form:连接.集群')">
@@ -25,6 +32,9 @@
         </el-space>
         <el-space>
           <el-button :icon="Plus" circle v-show="form.cluster === true" @click="form.nodes.push('')"></el-button>
+        </el-space>
+        <el-space>
+          <el-button :icon="QuestionFilled" circle v-show="form.cluster === true" @click="uriHelpFn"></el-button>
         </el-space>
       </el-form-item>
       <div v-if="form.cluster">
@@ -35,7 +45,7 @@
           <el-row style="width: 100%" :gutter="15">
             <el-col :span="20">
               <el-input v-model="form.nodes[k]" clearable
-                        :placeholder="`${$t('form:连接.地址')}:${$t('form:连接.端口')}`" />
+                        :placeholder="`redis uri`" />
             </el-col>
             <el-col :span="4">
               <el-button circle :icon="Delete" @click="form.nodes.splice(k,1)"></el-button>
@@ -43,13 +53,6 @@
           </el-row>
         </el-form-item>
       </div>
-      <el-form-item :label="$t('form:连接.用户名')">
-        <el-input autocorrect="off" :placeholder="$t('form:连接.用户名')" v-model="form.username" clearable />
-      </el-form-item>
-      <el-form-item :label="$t('form:连接.密码')">
-        <el-input autocorrect="off" :placeholder="$t('form:连接.密码')" v-model="form.password" show-password
-                  clearable />
-      </el-form-item>
       <el-form-item :label="$t('form:连接.代理.SSH代理')">
         <el-switch v-model="form.proxy"></el-switch>
       </el-form-item>
@@ -64,6 +67,11 @@
                       :label=" $t('form:连接.代理.地址')">
           <el-input :placeholder="$t('form:连接.代理.地址')" clearable v-model="form.proxyAddress" />
         </el-form-item>
+        <el-form-item :label=" $t('form:连接.端口')" prop="proxyPort"
+                      :rules="{required:true,message:$t('validation:连接.端口.必须')}">
+          <el-input type="number" :placeholder="$t('form:连接.端口')" clearable v-model="form.proxyPort" />
+        </el-form-item>
+
         <el-form-item :label=" $t('form:连接.代理.用户')" prop="proxyUsername"
                       :rules="{required:true,message:$t('validation:连接.代理用户.必须')}">
           <el-input :placeholder="$t('form:连接.代理.用户')" clearable v-model="form.proxyUsername" />
@@ -109,8 +117,9 @@ import type {Ref} from "vue";
 import {t} from "i18next";
 import request from "@/utils/request";
 import message from "@/utils/message";
-import {Plus, Delete, DocumentAdd} from "@element-plus/icons-vue";
+import {Plus, Delete, DocumentAdd,QuestionFilled} from "@element-plus/icons-vue";
 import {open} from "@tauri-apps/api/dialog";
+import {shell} from "@tauri-apps/api";
 
 // dialog mode define
 enum Mode {
@@ -130,7 +139,7 @@ const formRef: Ref = ref(null);
 let form = ref({
   name: "",
   address: "",
-  port: "6379",
+  port: 6379,
   username: "",
   password: "",
   cluster: false,
@@ -140,6 +149,7 @@ let form = ref({
   proxyUsername: "",
   proxyPassword: "",
   proxyFilePath: "",
+  proxyPort: 6379,
   proxyAddress: ""
 });
 // ref mode
@@ -148,11 +158,12 @@ let mode = ref("");
 const tittle = ref(`${t("创建")} ${t("连接")}`);
 defineExpose({
   edit(data: any) {
+    console.log(data);
     mode.value = Mode.Edit;
     visible.value = true;
     offAutoCorrect();
     tittle.value = `${t("编辑")} ${t("连接")}`;
-    form.value = data;
+    form.value = Object.assign(data, {nodes: data.nodes ? data.nodes.split(",") : [], proxyKeyType: KeyType.Password});
   },
   add() {
     mode.value = Mode.Add;
@@ -168,6 +179,7 @@ const chooseFilePathFn = async () => {
   });
   if (choose && typeof choose === "string") {
     form.value.proxyFilePath = choose;
+    formRef.value?.clearValidate(["proxyFilePath"]);
   }
 };
 // clean form data
@@ -176,7 +188,7 @@ const clearFn = () => {
     form.value = {
       name: "",
       address: "",
-      port: "6379",
+      port: 6379,
       username: "",
       password: "",
       cluster: false,
@@ -186,6 +198,7 @@ const clearFn = () => {
       proxyUsername: "",
       proxyPassword: "",
       proxyFilePath: "",
+      proxyPort: 6379,
       proxyAddress: ""
     };
     // async to clear validate
@@ -207,9 +220,9 @@ const okFn = () => {
     path = "/connection/edit";
   }
   formRef.value?.validate()
-    .then((res: any) => {
-      console.log(res);
-      request(path, form.value)
+    .then(() => {
+      console.log(form.value);
+      request(path, Object.assign(form.value, {nodes: form.value.nodes.join(",")}))
         .then((res: any) => {
           message.success(res.msg);
           visible.value = false;
@@ -229,6 +242,9 @@ const offAutoCorrect = () => {
   });
 };
 
+const uriHelpFn = () => {
+  shell.open("https://github.com/fuyoo/bs-redis-desktop-client/blob/master/uri.md")
+}
 
 </script>
 
