@@ -9,7 +9,7 @@
     "节点": "node",
     "代理": {
       "SSH代理": "SSH Proxy",
-      "认证类型": "Auth",
+      "认证类型": "Auth Type",
       "密码": "password",
       "文件": "key file",
       "地址": "address",
