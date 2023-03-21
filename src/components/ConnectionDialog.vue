@@ -172,7 +172,7 @@ defineExpose({
     offAutoCorrect();
   }
 });
-// open choose file Path dialog with tauri-api
+// open a dialog with tauri-api for choose file Path
 const chooseFilePathFn = async () => {
   let choose = await open({
     multiple: false

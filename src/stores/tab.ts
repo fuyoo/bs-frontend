@@ -26,7 +26,7 @@ export const useTabStore = defineStore("tab", () => {
   };
   init();
   /**
-   * tab聚焦
+   * tab focus
    * @param id
    */
   const focus = (id: string) => {
@@ -70,7 +70,7 @@ export const useTabStore = defineStore("tab", () => {
     return null;
   };
   /**
-   * move to tab item to the list start
+   * move a tab item on the list start
    * @param id
    */
   const moveToStart = (id: string) => {
@@ -83,7 +83,7 @@ export const useTabStore = defineStore("tab", () => {
     }
   };
   /**
-   * get index from the tab list
+   * get the index from the tab list
    * @param id
    */
   const indexOf = (id: string): number => {

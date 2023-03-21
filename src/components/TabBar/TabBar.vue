@@ -27,11 +27,7 @@ const closeFn = (id: string) => {
 };
 const chooseFn = (id: string, noMore?: boolean) => {
   tabStore.focus(id);
-  if (noMore !== true) {
-    tabStore.moveToStart(id);
-    moreList.value = [];
-    getMoreListData();
-  }
+
   switch (id) {
     case StaticPage.Home:
       router.push("/home");
@@ -40,7 +36,11 @@ const chooseFn = (id: string, noMore?: boolean) => {
       router.push("/setting");
       break;
     default:
-    /*empty*/
+      if (noMore !== true) {
+        tabStore.moveToStart(id);
+        moreList.value = [];
+        getMoreListData();
+      }
   }
 };
 let showMore = ref(false);
@@ -102,12 +102,16 @@ getMoreListData();
               <template #dropdown>
                 <el-dropdown-menu>
                   <el-dropdown-item :command="tab.id" :divided="k > 0" v-for="(tab,k) in moreList" :id="k">
-                    {{
-                      tab.name
-                    }}
-                    <el-icon class="more-close" @click.stop="closeFn(tab.id)">
-                      <Close />
-                    </el-icon>
+                    <div class="_drop_menu" :title="tab.name">
+                      <div class="_drop_name" >{{
+                          tab.name
+                        }}
+                      </div>
+                      <el-icon class="more-close" @click.stop="closeFn(tab.id)">
+                        <Close />
+                      </el-icon>
+                    </div>
+
                   </el-dropdown-item>
                 </el-dropdown-menu>
               </template>
@@ -141,7 +145,34 @@ getMoreListData();
     </div>
   </div>
 </template>
+<style lang="scss">
+._drop_menu {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 4px 0;
+  ._drop_name {
+    width: 160px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 
+  .more-close {
+    margin-left: 8px;
+    margin-right: -5px;
+    padding: 2px;
+    transition: 0.1s ease-in all;
+    font-size: 16px;
+    border-radius: 4px;
+    &:hover {
+      color: #fff;
+      background: red;
+    }
+  }
+}
+
+</style>
 <style scoped lang="scss">
 @import "@/style/var.scss";
 @import "@/style/mixin.scss";
@@ -186,9 +217,7 @@ getMoreListData();
             outline: none;
           }
 
-          :deep(.more-close) {
-            background: red;
-          }
+
         }
       }
     }
