@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import type {TabProps} from "@/components/TabBar/type";
-import {Close, ArrowDown, Setting, Document} from "@element-plus/icons-vue";
-import {open} from "@tauri-apps/api/shell";
-import {ref} from "vue";
-import type {Ref} from "vue";
-import {useTabStore} from "@/stores/tab";
+import type { TabProps } from "@/components/TabBar/type";
+import { Close, ArrowDown, Setting, Document } from "@element-plus/icons-vue";
+import { open } from "@tauri-apps/api/shell";
+import { ref } from "vue";
+import type { Ref } from "vue";
+import { useTabStore } from "@/stores/tab";
 import router from "@/router";
-import {useRoute} from "vue-router";
+import { useRoute } from "vue-router";
 
 const route = useRoute();
 const tabStore = useTabStore();
@@ -46,32 +46,35 @@ const chooseFn = (id: string, noMore?: boolean) => {
 let showMore = ref(false);
 let moreList: Ref<TabProps[]> = ref([]);
 let overflowStart = 0;
+
+const calcMoreTab = () => {
+  let width = 0;
+  let max = 0;
+  let pos = -1;
+  let main = document.querySelector("div[data-db]");
+  if (main) max = main.clientWidth;
+  let els = document.querySelectorAll("div[data-bar]");
+  for (let i = 0, length = els.length; i < length; i++) {
+    width += els[i].clientWidth;
+    if (width + i * 4 > max) {
+      pos = i;
+      break;
+    }
+  }
+  showMore.value = pos > -1;
+  if (pos > -1) {
+    let res = tabStore.tabs.filter((item, index) => {
+      return index >= pos;
+    });
+    if (res.length !== moreList.value.length) {
+      overflowStart = pos;
+      moreList.value = res;
+    }
+  }
+};
 const getMoreListData = () => {
-  setInterval(() => {
-    let width = 0;
-    let max = 0;
-    let pos = -1;
-    let main = document.querySelector("div[data-db]");
-    if (main) max = main.clientWidth;
-    let els = document.querySelectorAll("div[data-bar]");
-    for (let i = 0, length = els.length; i < length; i++) {
-      width += els[i].clientWidth;
-      if (width + i * 4 > max) {
-        pos = i;
-        break;
-      }
-    }
-    showMore.value = pos > -1;
-    if (pos > -1) {
-      let res = tabStore.tabs.filter((item, index) => {
-        return index >= pos;
-      });
-      if (res.length !== moreList.value.length) {
-        overflowStart = pos;
-        moreList.value = res;
-      }
-    }
-  }, 50);
+  calcMoreTab();
+  requestAnimationFrame(getMoreListData);
 };
 getMoreListData();
 </script>
@@ -80,59 +83,76 @@ getMoreListData();
     <div class="tab">
       <div class="tab-l">
         <slot name="tab"></slot>
-        <div @click="chooseFn(StaticPage.Home,true)" class="bar bar-default"
-             :class="{'bar-active':route.path.includes( StaticPage.Home)}">
+        <div
+          @click="chooseFn(StaticPage.Home, true)"
+          class="bar bar-default"
+          :class="{ 'bar-active': route.path.includes(StaticPage.Home) }"
+        >
           <slot name="bar">default</slot>
         </div>
         <div data-db class="tab-db">
-          <div data-bar :title="bar.name" @click="chooseFn(bar.id,true)" class="bar"
-               v-for="(bar,index) in tabStore.tabs"
-               :class="{'bar-active':bar.active}"
-               :key="index">
+          <div
+            data-bar
+            :title="bar.name"
+            @click="chooseFn(bar.id, true)"
+            class="bar"
+            v-for="(bar, index) in tabStore.tabs"
+            :class="{ 'bar-active': bar.active }"
+            :key="index"
+          >
             <span>{{ bar.name }}</span>
             <el-icon class="icon-close" @click.stop="closeFn(bar.id)">
               <Close />
             </el-icon>
           </div>
-          <div class="more" v-show="showMore">
-            <el-dropdown max-height="280" @command="chooseFn">
-              <el-icon>
-                <arrow-down />
-              </el-icon>
-              <template #dropdown>
-                <el-dropdown-menu>
-                  <el-dropdown-item :command="tab.id" :divided="k > 0" v-for="(tab,k) in moreList" :id="k">
-                    <div class="_drop_menu" :title="tab.name">
-                      <div class="_drop_name" >{{
-                          tab.name
-                        }}
-                      </div>
-                      <el-icon class="more-close" @click.stop="closeFn(tab.id)">
-                        <Close />
-                      </el-icon>
-                    </div>
-
-                  </el-dropdown-item>
-                </el-dropdown-menu>
+          <div class="more" v-if="showMore">
+            <el-popover width="200px">
+              <template #reference>
+                <el-icon>
+                  <arrow-down />
+                </el-icon>
               </template>
-            </el-dropdown>
+              <template #default>
+                <div
+                  class="_drop_menu"
+                  v-for="(tab, k) in moreList"
+                  :id="k"
+                  :title="tab.name"
+                >
+                  <div @click="chooseFn(tab.id)" class="_drop_name">
+                    {{ tab.name }}
+                  </div>
+                  <el-icon class="more-close" @click.stop="closeFn(tab.id)">
+                    <Close />
+                  </el-icon>
+                </div>
+              </template>
+            </el-popover>
           </div>
         </div>
       </div>
       <div class="tab-r">
-        <div @click="open('https://github.com/fuyoo/bs-redis-desktop-client/issues')" class="bar bar-default">
+        <div
+          @click="
+            open('https://github.com/fuyoo/bs-redis-desktop-client/issues')
+          "
+          class="bar bar-default"
+        >
           <slot name="feedback">
             <el-icon>
-              <Document />
-            </el-icon>&nbsp;{{ $t("反馈") }}
+              <Document /> </el-icon
+            >&nbsp;{{ $t("反馈") }}
           </slot>
         </div>
-        <div @click="chooseFn(StaticPage.Setting)" class="bar bar-default"
-             :class="{'bar-active': route.path.includes( StaticPage.Setting )}">
+        <div
+          @click="chooseFn(StaticPage.Setting)"
+          class="bar bar-default"
+          :class="{ 'bar-active': route.path.includes(StaticPage.Setting) }"
+        >
           <slot name="set">
             <el-icon>
-              <Setting />
-            </el-icon>&nbsp;{{ $t("设置") }}
+              <Setting /> </el-icon
+            >&nbsp;{{ $t("设置") }}
           </slot>
         </div>
       </div>
@@ -151,6 +171,11 @@ getMoreListData();
   justify-content: space-between;
   align-items: center;
   padding: 4px 0;
+
+  &:hover {
+    color: var(--el-color-primary);
+  }
+
   ._drop_name {
     width: 160px;
     white-space: nowrap;
@@ -165,13 +190,13 @@ getMoreListData();
     transition: 0.1s ease-in all;
     font-size: 16px;
     border-radius: 4px;
+
     &:hover {
       color: #fff;
       background: red;
     }
   }
 }
-
 </style>
 <style scoped lang="scss">
 @import "@/style/var.scss";
@@ -216,8 +241,6 @@ getMoreListData();
             height: 32px;
             outline: none;
           }
-
-
         }
       }
     }
