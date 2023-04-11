@@ -106,7 +106,7 @@ getMoreListData();
             </el-icon>
           </div>
           <div class="more" v-if="showMore">
-            <el-popover width="200px">
+            <el-popover width="200px" placement="bottom-start">
               <template #reference>
                 <el-icon>
                   <arrow-down />
@@ -170,12 +170,14 @@ getMoreListData();
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 4px 0;
-
+  padding-bottom: 10px;
+  user-select: none;
+  -webkit-user-select: none;
   &:hover {
     color: var(--el-color-primary);
   }
 
+  cursor: pointer;
   ._drop_name {
     width: 160px;
     white-space: nowrap;
@@ -196,6 +198,11 @@ getMoreListData();
       background: red;
     }
   }
+}
+._drop_menu + ._drop_menu {
+  border-top: 1px dashed var(--el-border-color);
+  padding-top: 10px;
+  padding-bottom: 0;
 }
 </style>
 <style scoped lang="scss">
