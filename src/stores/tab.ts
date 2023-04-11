@@ -14,14 +14,14 @@ export const useTabStore = defineStore("tab", () => {
   const init = () => {
     // 清理home目录下的tab聚焦
     if (route.path.includes("/home")) {
-      tabs.value = JSON.parse(localStorage.getItem("tabs") || "[]")
+      tabs.value = JSON.parse(sessionStorage.getItem("tabs") || "[]")
         .map((item: TabProps) => {
           item.active = false;
           return item;
         });
       //focus("home");
     } else {
-      tabs.value = JSON.parse(localStorage.getItem("tabs") || "[]");
+      tabs.value = JSON.parse(sessionStorage.getItem("tabs") || "[]");
     }
   };
   init();
@@ -37,7 +37,7 @@ export const useTabStore = defineStore("tab", () => {
         item.active = false;
       }
     });
-    localStorage.setItem("tabs", JSON.stringify(tabs.value));
+    sessionStorage.setItem("tabs", JSON.stringify(tabs.value));
     router.replace(`/connection/${id}`);
   };
   /**
@@ -49,7 +49,7 @@ export const useTabStore = defineStore("tab", () => {
     if (index === -1) {
       data.active = true;
       tabs.value.push(data);
-      localStorage.setItem("tabs", JSON.stringify(tabs.value));
+      sessionStorage.setItem("tabs", JSON.stringify(tabs.value));
     } else {
       focus(data.id);
     }
@@ -79,7 +79,7 @@ export const useTabStore = defineStore("tab", () => {
     // then push them to the start
     if (res && res.length > 0) {
       tabs.value.unshift(res[0]);
-      localStorage.setItem("tabs", JSON.stringify(tabs.value));
+      sessionStorage.setItem("tabs", JSON.stringify(tabs.value));
     }
   };
   /**
