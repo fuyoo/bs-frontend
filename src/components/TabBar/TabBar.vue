@@ -166,18 +166,16 @@ getMoreListData();
   </div>
 </template>
 <style lang="scss">
+@import "@/style/common";
 ._drop_menu {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding-bottom: 10px;
-  user-select: none;
-  -webkit-user-select: none;
+  @include bh-btn;
   &:hover {
     color: var(--el-color-primary);
   }
-
-  cursor: pointer;
   ._drop_name {
     width: 160px;
     white-space: nowrap;
@@ -202,6 +200,8 @@ getMoreListData();
 ._drop_menu + ._drop_menu {
   border-top: 1px dashed var(--el-border-color);
   padding-top: 10px;
+}
+._drop_menu:last-child{
   padding-bottom: 0;
 }
 </style>
@@ -212,7 +212,7 @@ getMoreListData();
 .tab-bar {
   .tab {
     @include flex-row-between-end;
-    height: 50px;
+    height: $tab-bar-height;
     background: var(--bg-color-tab);
     color: var(--text-color-black);
 

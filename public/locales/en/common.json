@@ -23,5 +23,6 @@
     "数据库": "database",
     "用户名": "username",
     "密码": "password"
-  }
+  },
+  "数据库": "database"
 }
