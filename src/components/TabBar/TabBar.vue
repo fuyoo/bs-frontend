@@ -120,7 +120,7 @@ getMoreListData();
                 <div
                   class="_drop_menu"
                   v-for="(tab, k) in moreList"
-                  :id="k"
+                  :id="k + ''"
                   :title="tab.name"
                 >
                   <div @click="chooseFn(tab.id)" class="_drop_name">
