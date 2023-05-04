@@ -90,7 +90,11 @@ getMoreListData();
         >
           <slot name="bar">default</slot>
         </div>
-        <div data-db class="tab-db">
+        <div
+          data-db
+          class="tab-db"
+          v-contextmenu="[{ label: '关闭', handler() {} }]"
+        >
           <div
             data-bar
             :title="bar.name"
@@ -167,15 +171,18 @@ getMoreListData();
 </template>
 <style lang="scss">
 @import "@/style/common";
+
 ._drop_menu {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding-bottom: 10px;
   @include bh-btn;
+
   &:hover {
     color: var(--el-color-primary);
   }
+
   ._drop_name {
     width: 160px;
     white-space: nowrap;
@@ -197,11 +204,13 @@ getMoreListData();
     }
   }
 }
+
 ._drop_menu + ._drop_menu {
   border-top: 1px dashed var(--el-border-color);
   padding-top: 10px;
 }
-._drop_menu:last-child{
+
+._drop_menu:last-child {
   padding-bottom: 0;
 }
 </style>

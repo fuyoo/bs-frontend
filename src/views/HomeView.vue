@@ -1,21 +1,26 @@
 <script setup lang="ts">
-import {ref} from "vue";
-import type {Ref} from "vue";
+import { ref } from "vue";
+import type { Ref } from "vue";
 import ConnectionDialog from "@/components/ConnectionDialog.vue";
 import request from "@/utils/request";
-import {useTabStore} from "@/stores/tab";
+import { useTabStore } from "@/stores/tab";
 import router from "@/router";
-import type {TabProps} from "@/components/TabBar/type";
-import {Plus, Refrigerator, Delete, EditPen, SwitchButton} from "@element-plus/icons-vue";
+import type { TabProps } from "@/components/TabBar/type";
+import {
+  Plus,
+  Refrigerator,
+  Delete,
+  EditPen,
+  SwitchButton,
+} from "@element-plus/icons-vue";
 
 const tabStore = useTabStore();
 let connectionDialogRef: Ref = ref(null);
 let list: Ref<any[]> = ref([]);
 const fetch = () => {
-  request("/connection/list", {})
-    .then((res: any) => {
-      list.value = res.data;
-    });
+  request("/connection/list", {}).then((res: any) => {
+    list.value = res.data;
+  });
 };
 fetch();
 const addFn = () => {
@@ -25,20 +30,23 @@ const addFn = () => {
 };
 const editFn = (data: TabProps) => {
   if (connectionDialogRef.value) {
-    connectionDialogRef.value.edit({...data});
+    connectionDialogRef.value.edit({ ...data });
   }
 };
 const connect = (data: TabProps) => {
-  router.push({
-      path: "/connection/" + data.id
+  // todo: check the redis server is available
+  tabStore.append(data);
+  router
+    .push({
+      path: "/connection/" + data.id,
     })
     .then(() => {
-      console.log(tabStore.append(data));
+      console.log();
     });
 };
 const deleteFn = (data: TabProps) => {
   tabStore.close(data.id);
-  request("/connection/delete", {id: data.id})
+  request("/connection/delete", { id: data.id })
     .then((res: any) => {
       console.log(res);
     })
@@ -56,8 +64,8 @@ const deleteFn = (data: TabProps) => {
       </el-icon>
       <div class="_db_info">
         <el-icon size="16">
-          <Plus />
-        </el-icon>&nbsp;{{ $t("创建") }}
+          <Plus /> </el-icon
+        >&nbsp;{{ $t("创建") }}
       </div>
     </div>
     <div class="_db_i" v-for="item in list" :key="item.id">
@@ -70,9 +78,24 @@ const deleteFn = (data: TabProps) => {
       <div class="_db_info">
         <p class="_db_info_name">{{ item.name }}</p>
         <p class="_db_info_act">
-          <el-button circle :icon="SwitchButton" type="success" @click="connect(item)"></el-button>
-          <el-button circle :icon="EditPen" @click="editFn(item)" type="warning"></el-button>
-          <el-button circle :icon="Delete" @click="deleteFn(item)" type="danger"></el-button>
+          <el-button
+            circle
+            :icon="SwitchButton"
+            type="success"
+            @click="connect(item)"
+          ></el-button>
+          <el-button
+            circle
+            :icon="EditPen"
+            @click="editFn(item)"
+            type="warning"
+          ></el-button>
+          <el-button
+            circle
+            :icon="Delete"
+            @click="deleteFn(item)"
+            type="danger"
+          ></el-button>
         </p>
       </div>
     </div>

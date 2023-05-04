@@ -39,7 +39,7 @@ export const i18nextPromise = i18next
   .init({
     // @ts-ignore
     debug: process.env.NODE_ENV === "development",
-    ns: ["common","form","validation"],
+    ns: ["common", "form", "validation", "contextmenu"],
     fallbackLng: "zh",
     lowerCaseLng: true,
     saveMissing: true,

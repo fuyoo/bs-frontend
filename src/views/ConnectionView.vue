@@ -1,18 +1,49 @@
 <script setup lang="ts">
 import { useRoute } from "vue-router";
-import { Cpu } from "@element-plus/icons-vue";
-import { ref } from "vue";
+import {
+  Refrigerator,
+  ScaleToOriginal,
+  FolderOpened,
+} from "@element-plus/icons-vue";
+import { computed, onMounted, ref } from "vue";
+import { Clear, ToggleLeft, ToggleRight } from "@/svgPath";
+import { useTranslation } from "i18next-vue";
 
+const { t } = useTranslation();
 const route = useRoute();
-let isCollapse = ref(true);
+let cleanUp = computed(() => t("contextmenu:清空"));
+let isCollapse = ref(false);
 let db = ref(1);
+const conso = {
+  log(...args: any[]) {
+    console.log(args);
+  },
+};
+onMounted(() => {
+  console.log(route);
+});
 </script>
 
 <template>
   <div class="_connection_view">
     <el-scrollbar class="menu">
-      <h5>数据库</h5>
+      <h5></h5>
       <div
+        :title="$t('数据库') + '.' + (i - 1)"
+        v-contextmenu="[
+          {
+            label: cleanUp,
+            handler() {
+              conso.log(`at here`);
+            },
+            icon: Clear,
+          },
+          {
+            label: computed(() => $t(`contextmenu:使用`)),
+            handler() {},
+          },
+        ]"
+        @click="db = i"
         :class="{
           _el_menu_active: db === i,
         }"
@@ -21,18 +52,58 @@ let db = ref(1);
         :key="i"
       >
         <el-icon>
-          <Cpu />
+          <Refrigerator />
         </el-icon>
-        <span v-show="isCollapse === false">
-          {{ $t("数据库") + (i - 1) }}
+        <span
+          class="_database_index"
+          style="margin-left: 5px"
+          v-show="isCollapse === false"
+        >
+          {{ $t("数据库") + "." + (i - 1) }}
         </span>
       </div>
+      <h5></h5>
     </el-scrollbar>
     <div class="_ctx">
       <div class="_action_bar">
-        <el-switch v-model="isCollapse"></el-switch>
+        <div
+          class="toggle-menu"
+          @click="isCollapse = true"
+          v-if="!isCollapse"
+          v-html="ToggleLeft"
+        ></div>
+        <div
+          class="toggle-menu"
+          v-html="ToggleRight"
+          @click="isCollapse = false"
+          v-else
+        ></div>
+        <div class="_action_bar_info">
+          <div class="_action_bar_info_item _action_bar_info_database">
+            <el-icon>
+              <Refrigerator />
+            </el-icon>
+            <span>{{ $t("数据库") + "." + (db - 1) }}</span>
+          </div>
+          <div class="_action_bar_info_item _action_bar_info_keys">
+            <el-icon>
+              <ScaleToOriginal />
+            </el-icon>
+            <span>{{ $t("键") }}</span>
+          </div>
+          <div class="_action_bar_info_item _action_bar_info_size">
+            <el-icon>
+              <FolderOpened />
+            </el-icon>
+            <span>{{ $t("内存") }}</span>
+          </div>
+        </div>
       </div>
-      <el-scrollbar class="_scroller_ctx"></el-scrollbar>
+      <el-scrollbar class="_scroller_ctx">
+        <div></div>
+
+        <div style="height: 1080px"></div>
+      </el-scrollbar>
     </div>
   </div>
 </template>
@@ -48,20 +119,38 @@ let db = ref(1);
   .menu {
     height: 100%;
     width: max-content;
-    padding: 0 10px;
+    background: $bg-framework;
+    border-right: 1px solid $border-color;
+    box-sizing: border-box;
 
     ._el_menu {
       border-right: none;
       display: flex;
       justify-content: center;
       align-items: center;
+      padding: 6px 10px;
+      margin: 5px 8px;
+      @include border-radius;
+      color: $text-color-light-3;
+      cursor: pointer;
+      transition: 0.3s ease-in-out all;
+      -webkit-user-select: none;
+      user-select: none;
+
+      &:hover {
+        background: var(--el-color-success-dark-2);
+        color: #fff;
+      }
+
+      ._database_index {
+        font-size: 12px;
+      }
     }
 
     ._el_menu_active {
-      color: var(--el-color-primary);
+      background: var(--el-color-success-dark-2);
+      color: #fff;
     }
-
-    @include shadow;
   }
 
   ._ctx {
@@ -70,11 +159,47 @@ let db = ref(1);
     ._action_bar {
       height: $action-bar-height;
       background: var(--el-menu-bg-color);
+      border-bottom: 1px solid $border-color;
+      box-sizing: border-box;
+      color: $text-color-light-1;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      .toggle-menu {
+        width: 20px;
+        height: 20px;
+        color: $text-color-light-3;
+        @include bh-btn;
+        margin-left: 8px;
+      }
+
+      ._action_bar_info {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        padding-right: 15px;
+
+        ._action_bar_info_item {
+          display: flex;
+          align-items: center;
+          font-size: 12px;
+
+          span {
+            margin-left: 4px;
+            color: $text-color-light-3;
+          }
+        }
+
+        ._action_bar_info_item + ._action_bar_info_item {
+          margin-left: 8px;
+        }
+      }
     }
 
     ._scroller_ctx {
       height: calc(100vh - $tab-bar-height - $action-bar-height);
-      background: green;
+      background: $content-background;
     }
   }
 }

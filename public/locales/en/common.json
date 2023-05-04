@@ -1,28 +1,33 @@
 {
-  "语言": "language",
-  "查找": "search",
-  "登录": "login",
-  "删除": "delete",
-  "添加": "add",
-  "编辑": "edit",
-  "注册": "register",
-  "连接": "connect",
-  "取消": "cancel",
-  "确定": "ok",
-  "创建": "create",
-  "新建": "new",
-  "加载中": "loading...",
-  "提交": "submit",
+  "语言": "Lang",
+  "查找": "Search",
+  "登录": "Login",
+  "删除": "Delete",
+  "添加": "Add",
+  "编辑": "Edit",
+  "注册": "Register",
+  "连接": "Connect",
+  "取消": "Cancel",
+  "确定": "Ok",
+  "创建": "Create",
+  "新建": "New",
+  "加载中": "Loading...",
+  "提交": "Submit",
   "主页": "Home",
   "设置": "Setting",
-  "反馈": "issues",
-  "刷新": "refresh",
-  "连接弹窗": {
-    "标题": "connection",
-    "地址": "address",
-    "数据库": "database",
-    "用户名": "username",
-    "密码": "password"
+  "反馈": "Issues",
+  "刷新": "Refresh",
+  "内存": "Memory",
+  "键": "Keys",
+  "主题": {
+    "标题": "theme"
   },
-  "数据库": "database"
+  "连接弹窗": {
+    "标题": "Connection",
+    "地址": "Address",
+    "数据库": "Database",
+    "用户名": "Username",
+    "密码": "Password"
+  },
+  "数据库": "Database"
 }

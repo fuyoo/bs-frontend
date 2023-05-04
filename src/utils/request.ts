@@ -1,4 +1,4 @@
-import {invoke} from "@tauri-apps/api";
+import { invoke } from "@tauri-apps/api";
 import message from "@/utils/message";
 
 const numberKey = ["proxyPort", "port"];
@@ -7,18 +7,21 @@ export default (path: string, payload?: object) => {
     message.loading();
     invoke("routes", {
       path,
-      payload: payload ? JSON.stringify(payload, (k, v) => {
-        if (numberKey.includes(k)) {
-          return Number(v);
-        }
-        if (v === null) {
-          return "";
-        } else {
-          return v;
-        }
-      }) : ""
+      payload: payload
+        ? JSON.stringify(payload, (k, v) => {
+            if (numberKey.includes(k)) {
+              return Number(v);
+            }
+            if (v === null) {
+              return "";
+            } else {
+              return v;
+            }
+          })
+        : "",
     })
       .then((res: any) => {
+        console.log(res);
         const data = JSON.parse(res);
         if (data.code !== 200) {
           message.error(data.msg);
@@ -35,4 +38,4 @@ export default (path: string, payload?: object) => {
         message.closeLoading();
       });
   });
-}
+};

@@ -1,6 +1,4 @@
-$tab-bar-height: 50px;
-$action-bar-height: 35px;
-$base-shadow: 4px 5px 5px  -2px #0002;
+
 :root {
   --bg-color-tab: #eee;
   --bg-color-tab-bar: #ddd;
@@ -11,18 +9,43 @@ $base-shadow: 4px 5px 5px  -2px #0002;
   --text-color-black-hover: #0008;
   --text-color-white: #fff;
   --text-color-white-hover: #fff8;
+  --bg-color-content: transparent;
+  --bg-color-framework: #fff;
+  --border-color: #eee;
+  --text-color-light: #111;
+  --text-color-light-0: #222;
+  --text-color-light-1: #333;
+  --text-color-light-2: #444;
+  --text-color-light-3: #555;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg-color-tab: #24182f;
-    --bg-color-tab-bar: #352543;
-    --bg-color-tab-bar-active: #141414;
-    --bg-color-tab-bar-active-text: #fff;
-    --bg-color-tab-bar-inactive-black: #fff9;
-    --text-color-black: #fff;
-    --text-color-black-hover: #fff8;
-    --text-color-white: #000;
-    --text-color-white-hover: #0008;
-  }
+html[class=dark] {
+  --bg-color-tab: #24182f;
+  --bg-color-tab-bar: #352543;
+  --bg-color-tab-bar-active: #141414;
+  --bg-color-tab-bar-active-text: #fff;
+  --bg-color-tab-bar-inactive-black: #fff9;
+  --bg-color-content: #3333;
+  --text-color-black: #fff;
+  --text-color-black-hover: #fff8;
+  --text-color-white: #000;
+  --text-color-white-hover: #0008;
+  --bg-color-framework: #000;
+  --border-color: #333;
+  --text-color-light-0: #eee;
+  --text-color-light-1: #ddd;
+  --text-color-light-2: #ccc;
+  --text-color-light-3: #bbb;
 }
+
+$tab-bar-height: 50px;
+$action-bar-height: 35px;
+$base-shadow: 4px 5px 5px  -2px #0002;
+$color-primary: var(--el-color-success-dark-2);
+$content-background: var(--bg-color-content);
+$bg-framework: var(--bg-color-framework);
+$border-color: var(--border-color);
+$text-color-light-0: var(--text-color-light-0);
+$text-color-light-1: var(--text-color-light-1);
+$text-color-light-2: var(--text-color-light-2);
+$text-color-light-3: var(--text-color-light-3);

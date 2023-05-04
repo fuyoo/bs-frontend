@@ -11,8 +11,10 @@ import "normalize.css";
 import "element-plus/dist/index.css";
 import "element-plus/theme-chalk/dark/css-vars.css";
 import "@/style/common.scss";
+import contextmenu from "@/directives/contextmenu";
 
 const app = createApp(Suspenser);
+app.directive(contextmenu.name, contextmenu.directive);
 app
   .use(createPinia())
   .use(i18n)

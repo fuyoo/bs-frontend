@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import i18next from "i18next";
 import { ref } from "vue";
-
+import { useDark, useToggle } from "@vueuse/core";
+import { Sunny, Moon } from "@element-plus/icons-vue";
+import {Lang} from "@/svgPath/index"
 const lng = ref(i18next.language);
 const lngs = [
   {
@@ -13,16 +15,40 @@ const lngs = [
     code: "en",
   },
 ];
+
+const isDark = useDark();
 const setLngFn = (data: string) => {
   i18next.changeLanguage(data);
+};
+const changeTheme = () => {
+  useToggle(
+    useDark({
+      valueDark: "dark",
+    })
+  );
 };
 </script>
 
 <template>
   <div class="setting">
-    <el-form size="small">
-      <el-form-item :label="$t('语言')">
-        <img src="@/assets/lang.svg" width="16" style="margin-right: 10px"/>
+    <el-form size="default" label-width="80px">
+      <el-form-item :label="$t('主题.标题')">
+        <el-switch
+          size="default"
+          v-model="isDark"
+          inline-prompt
+          :active-icon="Moon"
+          @change="changeTheme"
+          :inactive-icon="Sunny"
+        />
+      </el-form-item>
+      <el-form-item>
+        <template #label>
+          <div style="display: flex; justify-content: center">
+            <div class="lang-svg" v-html="Lang"></div>
+            <span>{{ $t("语言") }}</span>
+          </div>
+        </template>
         <el-select v-model="lng" @change="setLngFn">
           <el-option
             v-for="item in lngs"
@@ -39,5 +65,9 @@ const setLngFn = (data: string) => {
 <style scoped lang="scss">
 .setting {
   padding: 15px;
+}
+
+.lang-svg {
+  margin-right: 4px;
 }
 </style>
