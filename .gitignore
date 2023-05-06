@@ -27,3 +27,4 @@ coverage
 *.sln
 *.sw?
 .npmrc
+components.d.ts
