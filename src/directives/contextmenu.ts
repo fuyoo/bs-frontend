@@ -3,6 +3,7 @@
  * instead svg content to replace it. such as <path></path>.
  */
 import "@/style/contextmenu.scss";
+import { isRef } from "vue";
 
 let inited = false;
 const contextmenu = {
@@ -23,14 +24,14 @@ const contextmenu = {
     };
     // create menu items
     const genPopMenu = (
-      data: { label: string; handler: () => void; icon?: string }[]
+      data: { label: string; handler: (args: any) => void; icon?: string }[]
     ): Element => {
       //check dom is exists and remove it
       removePopMenuContainer();
       // then create a container
       const div = genPopMenuContainer();
       // append menu items
-      data.forEach((item) => {
+      data.forEach((item,index) => {
         //create a child dom
         const dom = document.createElement("div");
         // set class
@@ -39,21 +40,29 @@ const contextmenu = {
         dom.innerHTML = `<div class="_ctx_menu_item_icon">
                         ${
                           item.icon
-                            ? `<svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" >${item.icon}</svg>`
+                            ? `<svg fill="currentColor" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" >${item.icon}</svg>`
                             : ""
                         }
                         </div>
-                        <div class="_ctx_menu_item_label">${item.label}</div>`;
+                        <div class="_ctx_menu_item_label">${
+                          isRef(item.label) ? item.label.value : item.label
+                        }</div>`;
         dom.onclick = (evt) => {
           evt.stopPropagation();
           try {
-            item.handler();
+            item.handler(binding.arg);
           } catch (e) {
             console.error(e);
           }
           removePopMenuContainer();
         };
         div.appendChild(dom);
+        if (index < data.length -1) {
+          const line = document.createElement("div")
+          line.setAttribute("class","_ctx_menu_item_line")
+          div.appendChild(line)
+        }
+
       });
       return div;
     };

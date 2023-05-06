@@ -2,7 +2,15 @@ import { invoke } from "@tauri-apps/api";
 import message from "@/utils/message";
 
 const numberKey = ["proxyPort", "port"];
-export default (path: string, payload?: object) => {
+export interface Response<T> {
+    code: number,
+    data: T,
+    msg: string
+}
+export default <T>(
+  path: string,
+  payload?: object
+): Promise<Response<T>> => {
   return new Promise((resolve, reject) => {
     message.loading();
     invoke("routes", {
@@ -21,7 +29,6 @@ export default (path: string, payload?: object) => {
         : "",
     })
       .then((res: any) => {
-        console.log(res);
         const data = JSON.parse(res);
         if (data.code !== 200) {
           message.error(data.msg);

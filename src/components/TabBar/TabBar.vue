@@ -143,9 +143,7 @@ getMoreListData();
           class="bar bar-default"
         >
           <slot name="feedback">
-            <el-icon>
-              <Document /> </el-icon
-            >&nbsp;{{ $t("反馈") }}
+            <el-icon> <Document /> </el-icon>&nbsp;{{ $t("反馈") }}
           </slot>
         </div>
         <div
@@ -154,9 +152,7 @@ getMoreListData();
           :class="{ 'bar-active': route.path.includes(StaticPage.Setting) }"
         >
           <slot name="set">
-            <el-icon>
-              <Setting /> </el-icon
-            >&nbsp;{{ $t("设置") }}
+            <el-icon> <Setting /> </el-icon>&nbsp;{{ $t("设置") }}
           </slot>
         </div>
       </div>
@@ -164,6 +160,11 @@ getMoreListData();
     <div v-show="route.path.indexOf('/connection') === -1">
       <slot></slot>
     </div>
+    <!--      <router-view v-slot="{ Component }">-->
+    <!--          <keep-alive>-->
+    <!--              <component :is="Component" />-->
+    <!--          </keep-alive>-->
+    <!--      </router-view>-->
     <div v-show="tab.active" v-for="tab in tabStore.tabs" :key="tab.id">
       <slot name="connection"></slot>
     </div>

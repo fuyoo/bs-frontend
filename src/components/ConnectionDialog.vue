@@ -1,7 +1,7 @@
 <template>
   <el-dialog
     @closed="clearFn"
-    style="width: 380px"
+    style="width: 420px"
     :close-on-click-modal="false"
     v-model="visible"
     :title="tittle"
@@ -21,32 +21,46 @@
         />
       </el-form-item>
       <div v-if="!form.cluster">
-        <el-form-item
-          prop="address"
-          :rules="{ required: true, message: $t('validation:连接.地址.必须') }"
-          :label="$t('form:连接.地址')"
-        >
-          <el-input
-            autocorrect="off"
-            :placeholder="$t('form:连接.地址')"
-            v-model="form.address"
-            clearable
-          />
-        </el-form-item>
-        <el-form-item
-          prop="port"
-          :rules="{ required: true, message: $t('validation:连接.端口.必须') }"
-          :label="$t('form:连接.端口')"
-        >
-          <el-input-number
-            type="number"
-            class="w-full"
-            autocorrect="off"
-            :placeholder="$t('form:连接.端口')"
-            v-model="form.port"
-            clearable
-          />
-        </el-form-item>
+        <el-row :gutter="0">
+          <el-col :span="14">
+            <el-form-item
+              prop="address"
+              :rules="{
+                required: true,
+                message: $t('validation:连接.地址.必须'),
+              }"
+              :label="$t('form:连接.地址')"
+            >
+              <el-input
+                autocorrect="off"
+                :placeholder="$t('form:连接.地址')"
+                v-model="form.address"
+                clearable
+              />
+            </el-form-item>
+          </el-col>
+          <el-col :span="10">
+            <el-form-item
+              label-width="50px"
+              prop="port"
+              :rules="{
+                required: true,
+                message: $t('validation:连接.端口.必须'),
+              }"
+              :label="$t('form:连接.端口')"
+            >
+              <el-input-number
+                type="number"
+                class="w-full"
+                autocorrect="off"
+                :placeholder="$t('form:连接.端口')"
+                v-model="form.port"
+                clearable
+              />
+            </el-form-item>
+          </el-col>
+        </el-row>
+
         <el-form-item :label="$t('form:连接.用户名')">
           <el-input
             autocorrect="off"
@@ -136,32 +150,42 @@
             </el-radio>
           </el-radio-group>
         </el-form-item>
-        <el-form-item
-          prop="proxyAddress"
-          :rules="{
-            required: true,
-            message: $t('validation:连接.代理地址.必须'),
-          }"
-          :label="$t('form:连接.代理.地址')"
-        >
-          <el-input
-            :placeholder="$t('form:连接.代理.地址')"
-            clearable
-            v-model="form.proxyAddress"
-          />
-        </el-form-item>
-        <el-form-item
-          :label="$t('form:连接.端口')"
-          prop="proxyPort"
-          :rules="{ required: true, message: $t('validation:连接.端口.必须') }"
-        >
-          <el-input-number
-            class="w-full"
-            :placeholder="$t('form:连接.端口')"
-            clearable
-            v-model="form.proxyPort"
-          />
-        </el-form-item>
+        <el-row :gutter="0">
+          <el-col :span="14">
+            <el-form-item
+              prop="proxyAddress"
+              :rules="{
+                required: true,
+                message: $t('validation:连接.代理地址.必须'),
+              }"
+              :label="$t('form:连接.代理.地址')"
+            >
+              <el-input
+                :placeholder="$t('form:连接.代理.地址')"
+                clearable
+                v-model="form.proxyAddress"
+              />
+            </el-form-item>
+          </el-col>
+          <el-col :span="10">
+            <el-form-item
+                    label-width="50px"
+              :label="$t('form:连接.端口')"
+              prop="proxyPort"
+              :rules="{
+                required: true,
+                message: $t('validation:连接.端口.必须'),
+              }"
+            >
+              <el-input-number
+                class="w-full"
+                :placeholder="$t('form:连接.端口')"
+                clearable
+                v-model="form.proxyPort"
+              />
+            </el-form-item>
+          </el-col>
+        </el-row>
 
         <el-form-item
           :label="$t('form:连接.代理.用户')"
@@ -412,4 +436,8 @@ const uriHelpFn = () => {
 };
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.w-full {
+  width: 100%;
+}
+</style>

@@ -1,27 +1,63 @@
 <script setup lang="ts">
 import { useRoute } from "vue-router";
-import {
-  Refrigerator,
-  ScaleToOriginal,
-  FolderOpened,
-} from "@element-plus/icons-vue";
-import { computed, onMounted, ref } from "vue";
-import { Clear, ToggleLeft, ToggleRight } from "@/svgPath";
+import { Key, FolderOpened, Coin } from "@element-plus/icons-vue";
+import { computed, onMounted, reactive, ref } from "vue";
+import { Clear, ToggleLeft, ToggleRight, UseIcon } from "@/svgPath";
 import { useTranslation } from "i18next-vue";
+import KeyContents from "@/components/KeyContents.vue";
+import { queryDatabaseInfo } from "@/api/database";
+import { useId } from "@/utils/use";
 
+const id = useId();
 const { t } = useTranslation();
 const route = useRoute();
-let cleanUp = computed(() => t("contextmenu:清空"));
 let isCollapse = ref(false);
 let db = ref(1);
-const conso = {
-  log(...args: any[]) {
-    console.log(args);
-  },
-};
-onMounted(() => {
-  console.log(route);
+let dbInfo = reactive({
+  database: 16,
+  keys: 0,
+  memory: ["0", "0", ":"],
 });
+const chooseDb = (i: number) => {
+  db.value = i;
+  getDatabaseInfo();
+};
+const getDatabaseInfo = () => {
+  queryDatabaseInfo<{
+    database: string; keys: number; memory: string;
+  }>({
+    id,
+    db: db.value - 1,
+    key: "hW85ciwMV8_bCtIe_e9Xs",
+  }).then((res) => {
+    dbInfo.database = Number(res.data.database);
+    dbInfo.keys = res.data.keys;
+    dbInfo.memory = res.data.memory.split("\r\n");
+  });
+};
+
+onMounted(() => {
+  if (!route.params.id) return;
+  getDatabaseInfo();
+});
+const useDb = computed(() => t(`contextmenu:使用`));
+let cleanUp = computed(() => t("contextmenu:清空"));
+const contextmenu = [
+  {
+    label: cleanUp,
+    handler(args: any) {
+      console.log(`at here`, args);
+    },
+    icon: Clear,
+  },
+  {
+    label: useDb,
+    handler(db: number) {
+      chooseDb(db);
+    },
+    icon: UseIcon,
+  },
+];
 </script>
 
 <template>
@@ -30,29 +66,17 @@ onMounted(() => {
       <h5></h5>
       <div
         :title="$t('数据库') + '.' + (i - 1)"
-        v-contextmenu="[
-          {
-            label: cleanUp,
-            handler() {
-              conso.log(`at here`);
-            },
-            icon: Clear,
-          },
-          {
-            label: computed(() => $t(`contextmenu:使用`)),
-            handler() {},
-          },
-        ]"
-        @click="db = i"
+        v-contextmenu:[i]="contextmenu"
+        @click="chooseDb(i)"
         :class="{
           _el_menu_active: db === i,
         }"
         class="_el_menu"
-        v-for="i in 16"
+        v-for="i in dbInfo.database"
         :key="i"
       >
         <el-icon>
-          <Refrigerator />
+          <Coin />
         </el-icon>
         <span
           class="_database_index"
@@ -81,28 +105,26 @@ onMounted(() => {
         <div class="_action_bar_info">
           <div class="_action_bar_info_item _action_bar_info_database">
             <el-icon>
-              <Refrigerator />
+              <Coin />
             </el-icon>
             <span>{{ $t("数据库") + "." + (db - 1) }}</span>
           </div>
           <div class="_action_bar_info_item _action_bar_info_keys">
             <el-icon>
-              <ScaleToOriginal />
+              <Key />
             </el-icon>
-            <span>{{ $t("键") }}</span>
+            <span>{{ $t("键") }} : {{ dbInfo.keys }}</span>
           </div>
           <div class="_action_bar_info_item _action_bar_info_size">
             <el-icon>
               <FolderOpened />
             </el-icon>
-            <span>{{ $t("内存") }}</span>
+            <span>{{ $t("内存") }}: {{ dbInfo.memory[2].split(":")[1] }}</span>
           </div>
         </div>
       </div>
       <el-scrollbar class="_scroller_ctx">
-        <div></div>
-
-        <div style="height: 1080px"></div>
+        <KeyContents :db="db - 1"></KeyContents>
       </el-scrollbar>
     </div>
   </div>

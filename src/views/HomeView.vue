@@ -13,6 +13,7 @@ import {
   EditPen,
   SwitchButton,
 } from "@element-plus/icons-vue";
+import { isAvailable } from "@/api/database";
 
 const tabStore = useTabStore();
 let connectionDialogRef: Ref = ref(null);
@@ -23,6 +24,9 @@ const fetch = () => {
   });
 };
 fetch();
+const recordIsAvailable = (data: any) => {
+  return isAvailable(data);
+};
 const addFn = () => {
   if (connectionDialogRef.value) {
     connectionDialogRef.value.add();
@@ -33,16 +37,12 @@ const editFn = (data: TabProps) => {
     connectionDialogRef.value.edit({ ...data });
   }
 };
-const connect = (data: TabProps) => {
-  // todo: check the redis server is available
+const connect = async (data: TabProps) => {
+  await recordIsAvailable(data);
   tabStore.append(data);
-  router
-    .push({
-      path: "/connection/" + data.id,
-    })
-    .then(() => {
-      console.log();
-    });
+  await router.push({
+    path: "/connection/" + data.id,
+  });
 };
 const deleteFn = (data: TabProps) => {
   tabStore.close(data.id);

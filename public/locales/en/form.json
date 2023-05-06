@@ -16,5 +16,6 @@
       "用户": "username",
       "请选择文件": "please select a key file"
     }
-  }
+  },
+  "匹配条件": "Match pattern"
 }

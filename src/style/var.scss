@@ -17,9 +17,10 @@
   --text-color-light-1: #333;
   --text-color-light-2: #444;
   --text-color-light-3: #555;
+  --el-switch-on-color: #eee;
 }
 
-html[class=dark] {
+html.dark {
   --bg-color-tab: #24182f;
   --bg-color-tab-bar: #352543;
   --bg-color-tab-bar-active: #141414;
@@ -36,6 +37,7 @@ html[class=dark] {
   --text-color-light-1: #ddd;
   --text-color-light-2: #ccc;
   --text-color-light-3: #bbb;
+  --el-switch-on-color: #444;
 }
 
 $tab-bar-height: 50px;

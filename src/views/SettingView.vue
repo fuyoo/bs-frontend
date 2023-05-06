@@ -65,6 +65,9 @@ const changeTheme = () => {
 <style scoped lang="scss">
 .setting {
   padding: 15px;
+  .el-switch {
+    --el-switch-on-color: #444;
+  }
 }
 
 .lang-svg {
