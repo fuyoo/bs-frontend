@@ -1,8 +1,8 @@
-import {ref} from "vue";
-import type {Ref} from "vue";
-import {defineStore} from "pinia";
-import type {TabProps} from "@/components/TabBar/type";
-import {useRoute} from "vue-router";
+import { ref } from "vue";
+import type { Ref } from "vue";
+import { defineStore } from "pinia";
+import type { TabProps } from "@/components/TabBar/type";
+import { useRoute } from "vue-router";
 import router from "@/router";
 
 export const useTabStore = defineStore("tab", () => {
@@ -14,11 +14,12 @@ export const useTabStore = defineStore("tab", () => {
   const init = () => {
     // 清理home目录下的tab聚焦
     if (route.path.includes("/home")) {
-      tabs.value = JSON.parse(sessionStorage.getItem("tabs") || "[]")
-        .map((item: TabProps) => {
+      tabs.value = JSON.parse(sessionStorage.getItem("tabs") || "[]").map(
+        (item: TabProps) => {
           item.active = false;
           return item;
-        });
+        }
+      );
       //focus("home");
     } else {
       tabs.value = JSON.parse(sessionStorage.getItem("tabs") || "[]");
@@ -29,29 +30,25 @@ export const useTabStore = defineStore("tab", () => {
    * tab focus
    * @param id
    */
-  const focus = (id: string) => {
+  const focus = async (id: string) => {
     tabs.value.forEach((item) => {
-      if (item.id === id) {
-        item.active = true;
-      } else {
-        item.active = false;
-      }
+      item.active = item.id === id;
     });
     sessionStorage.setItem("tabs", JSON.stringify(tabs.value));
-    router.replace(`/connection/${id}`);
+    return await router.replace(`/connection/${id}`);
   };
   /**
    * append a tab item
    * @param data
    */
-  const append = (data: TabProps) => {
+  const append = async (data: TabProps) => {
     const index = indexOf(data.id);
     if (index === -1) {
       data.active = true;
       tabs.value.push(data);
       sessionStorage.setItem("tabs", JSON.stringify(tabs.value));
     } else {
-      focus(data.id);
+      return await focus(data.id);
     }
   };
   /**
@@ -62,6 +59,7 @@ export const useTabStore = defineStore("tab", () => {
     const index = indexOf(id);
     if (index > -1) {
       tabs.value.splice(index, 1);
+      sessionStorage.setItem("tabs", JSON.stringify(tabs.value));
       // focus to the last item
       if (tabs.value.length > 0) {
         return tabs.value[tabs.value.length - 1];
@@ -95,5 +93,5 @@ export const useTabStore = defineStore("tab", () => {
     }
     return -1;
   };
-  return {tabs, append, close, focus, moveToStart};
+  return { tabs, append, close, focus, moveToStart };
 });

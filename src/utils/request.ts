@@ -11,6 +11,8 @@ export default <T>(
   path: string,
   payload?: object
 ): Promise<Response<T>> => {
+    console.info(":====================== request payload ======================:")
+    console.info(payload)
   return new Promise((resolve, reject) => {
     message.loading();
     invoke("routes", {

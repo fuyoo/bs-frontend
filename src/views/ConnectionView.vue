@@ -1,16 +1,14 @@
 <script setup lang="ts">
-import { useRoute } from "vue-router";
 import { Key, FolderOpened, Coin } from "@element-plus/icons-vue";
 import { computed, onMounted, reactive, ref } from "vue";
 import { Clear, ToggleLeft, ToggleRight, UseIcon } from "@/svgPath";
 import { useTranslation } from "i18next-vue";
 import KeyContents from "@/components/KeyContents.vue";
 import { queryDatabaseInfo } from "@/api/database";
-import { useId } from "@/utils/use";
+import { useRoute } from "vue-router";
 
-const id = useId();
-const { t } = useTranslation();
 const route = useRoute();
+const { t } = useTranslation();
 let isCollapse = ref(false);
 let db = ref(1);
 let dbInfo = reactive({
@@ -23,10 +21,13 @@ const chooseDb = (i: number) => {
   getDatabaseInfo();
 };
 const getDatabaseInfo = () => {
+  console.log(route.params.id);
   queryDatabaseInfo<{
-    database: string; keys: number; memory: string;
+    database: string;
+    keys: number;
+    memory: string;
   }>({
-    id,
+    id: route.params.id.toString(),
     db: db.value - 1,
     key: "hW85ciwMV8_bCtIe_e9Xs",
   }).then((res) => {
@@ -35,11 +36,13 @@ const getDatabaseInfo = () => {
     dbInfo.memory = res.data.memory.split("\r\n");
   });
 };
-
-onMounted(() => {
+const init = () => {
   if (!route.params.id) return;
-  getDatabaseInfo();
-});
+  chooseDb(1);
+};
+
+onMounted(() => init());
+
 const useDb = computed(() => t(`contextmenu:使用`));
 let cleanUp = computed(() => t("contextmenu:清空"));
 const contextmenu = [
@@ -63,7 +66,6 @@ const contextmenu = [
 <template>
   <div class="_connection_view">
     <el-scrollbar class="menu">
-      <h5></h5>
       <div
         :title="$t('数据库') + '.' + (i - 1)"
         v-contextmenu:[i]="contextmenu"
@@ -86,7 +88,6 @@ const contextmenu = [
           {{ $t("数据库") + "." + (i - 1) }}
         </span>
       </div>
-      <h5></h5>
     </el-scrollbar>
     <div class="_ctx">
       <div class="_action_bar">
@@ -103,24 +104,27 @@ const contextmenu = [
           v-else
         ></div>
         <div class="_action_bar_info">
+            <div class="_action_bar_info_item _action_bar_info_size">
+                <el-icon>
+                    <FolderOpened />
+                </el-icon>
+                <span>Redis {{ $t("内存") }}: {{ dbInfo.memory[2].split(":")[1] }}</span>
+            </div>
+            <el-divider direction="vertical" />
           <div class="_action_bar_info_item _action_bar_info_database">
             <el-icon>
               <Coin />
             </el-icon>
             <span>{{ $t("数据库") + "." + (db - 1) }}</span>
           </div>
-          <div class="_action_bar_info_item _action_bar_info_keys">
+            <el-divider direction="vertical" />
+            <div class="_action_bar_info_item _action_bar_info_keys">
             <el-icon>
               <Key />
             </el-icon>
             <span>{{ $t("键") }} : {{ dbInfo.keys }}</span>
           </div>
-          <div class="_action_bar_info_item _action_bar_info_size">
-            <el-icon>
-              <FolderOpened />
-            </el-icon>
-            <span>{{ $t("内存") }}: {{ dbInfo.memory[2].split(":")[1] }}</span>
-          </div>
+
         </div>
       </div>
       <el-scrollbar class="_scroller_ctx">
@@ -139,10 +143,10 @@ const contextmenu = [
   display: flex;
 
   .menu {
-    height: 100%;
+    height: calc(100% - 40px);
+    margin-top: 20px;
     width: max-content;
     background: $bg-framework;
-    border-right: 1px solid $border-color;
     box-sizing: border-box;
 
     ._el_menu {
@@ -178,6 +182,7 @@ const contextmenu = [
   ._ctx {
     flex: 1;
 
+    border-left: 1px solid $border-color;
     ._action_bar {
       height: $action-bar-height;
       background: var(--el-menu-bg-color);
@@ -208,13 +213,13 @@ const contextmenu = [
           font-size: 12px;
 
           span {
-            margin-left: 4px;
+            margin-left: 6px;
             color: $text-color-light-3;
           }
         }
 
         ._action_bar_info_item + ._action_bar_info_item {
-          margin-left: 8px;
+          
         }
       }
     }

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { TabProps } from "@/components/TabBar/type";
-import { Close, ArrowDown, Setting, Document } from "@element-plus/icons-vue";
+import { Close, ArrowDown, Setting, Document,HomeFilled } from "@element-plus/icons-vue";
 import { open } from "@tauri-apps/api/shell";
 import { ref } from "vue";
 import type { Ref } from "vue";
@@ -82,13 +82,17 @@ getMoreListData();
   <div class="tab-bar">
     <div class="tab">
       <div class="tab-l">
-        <slot name="tab"></slot>
+        <div class="logo">
+          <img src="@/assets/logo.png" width="42" height="42" />
+        </div>
         <div
           @click="chooseFn(StaticPage.Home, true)"
           class="bar bar-default"
           :class="{ 'bar-active': route.path.includes(StaticPage.Home) }"
         >
-          <slot name="bar">default</slot>
+            <el-icon>
+                <HomeFilled/>
+            </el-icon>&nbsp;{{ $t("主页") }}
         </div>
         <div
           data-db
@@ -142,31 +146,20 @@ getMoreListData();
           "
           class="bar bar-default"
         >
-          <slot name="feedback">
-            <el-icon> <Document /> </el-icon>&nbsp;{{ $t("反馈") }}
-          </slot>
+          <el-icon>
+            <Document /> </el-icon
+          >&nbsp;{{ $t("反馈") }}
         </div>
         <div
           @click="chooseFn(StaticPage.Setting)"
           class="bar bar-default"
           :class="{ 'bar-active': route.path.includes(StaticPage.Setting) }"
         >
-          <slot name="set">
-            <el-icon> <Setting /> </el-icon>&nbsp;{{ $t("设置") }}
-          </slot>
+          <el-icon>
+            <Setting /> </el-icon
+          >&nbsp;{{ $t("设置") }}
         </div>
       </div>
-    </div>
-    <div v-show="route.path.indexOf('/connection') === -1">
-      <slot></slot>
-    </div>
-    <!--      <router-view v-slot="{ Component }">-->
-    <!--          <keep-alive>-->
-    <!--              <component :is="Component" />-->
-    <!--          </keep-alive>-->
-    <!--      </router-view>-->
-    <div v-show="tab.active" v-for="tab in tabStore.tabs" :key="tab.id">
-      <slot name="connection"></slot>
     </div>
   </div>
 </template>
@@ -220,6 +213,9 @@ getMoreListData();
 @import "@/style/mixin.scss";
 
 .tab-bar {
+  .logo {
+    margin: 0 30px;
+  }
   .tab {
     @include flex-row-between-end;
     height: $tab-bar-height;

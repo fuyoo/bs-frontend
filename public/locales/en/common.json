@@ -1,4 +1,6 @@
 {
+  "应用名": "BS Redis Desktop Client",
+  "版本": "Version",
   "语言": "Lang",
   "查找": "Search",
   "登录": "Login",
@@ -17,8 +19,11 @@
   "设置": "Setting",
   "反馈": "Issues",
   "刷新": "Refresh",
-  "内存": "Memory",
+  "内存": "Used Memory",
+  "过期时间": "Expire(ms)",
+  "键类型": "Type",
   "键": "Keys",
+  "命名空间分隔符": "Namespace Split",
   "主题": {
     "标题": "theme"
   },

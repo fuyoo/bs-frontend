@@ -39,10 +39,8 @@ const editFn = (data: TabProps) => {
 };
 const connect = async (data: TabProps) => {
   await recordIsAvailable(data);
-  tabStore.append(data);
-  await router.push({
-    path: "/connection/" + data.id,
-  });
+  await tabStore.append(data);
+  await tabStore.focus(data.id)
 };
 const deleteFn = (data: TabProps) => {
   tabStore.close(data.id);
