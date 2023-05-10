@@ -1,6 +1,8 @@
 {
   "应用名": "BS Redis Desktop Client",
   "版本": "Version",
+  "描述": "The BS Redis Desktop Client is written by Rust and Tauri, uses virtual lists to render keys, and supports 10,000+key rendering.",
+  "许可": "LICENSE",
   "语言": "Lang",
   "查找": "Search",
   "登录": "Login",
@@ -20,12 +22,17 @@
   "反馈": "Issues",
   "刷新": "Refresh",
   "内存": "Used Memory",
-  "过期时间": "Expire(ms)",
+  "过期时间": "Expire",
+  "过期时间单位": "s",
+  "永不过期": "never",
   "键类型": "Type",
   "键": "Keys",
-  "命名空间分隔符": "Namespace Split",
+  "请选择键": "Please choose a key.",
+  "启用键命名空间": "Enable Namespace",
+  "命名空间分隔符": "NS Split Symbol",
+  "键个数": "Key Count",
   "主题": {
-    "标题": "theme"
+    "标题": "Dark Mode"
   },
   "连接弹窗": {
     "标题": "Connection",
@@ -33,6 +40,12 @@
     "数据库": "Database",
     "用户名": "Username",
     "密码": "Password"
+  },
+  "删除询问弹框": {
+    "消息": "The deletion is not recoverable, are you sure you want to delete it?",
+    "标题": "Delete",
+    "确定按钮": "Ok",
+    "取消": "Cancel"
   },
   "数据库": "Database"
 }

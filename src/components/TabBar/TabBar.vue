@@ -7,7 +7,7 @@ import type { Ref } from "vue";
 import { useTabStore } from "@/stores/tab";
 import router from "@/router";
 import { useRoute } from "vue-router";
-
+import {t} from "i18next"
 const route = useRoute();
 const tabStore = useTabStore();
 
@@ -92,7 +92,7 @@ getMoreListData();
         >
             <el-icon>
                 <HomeFilled/>
-            </el-icon>&nbsp;{{ $t("主页") }}
+            </el-icon>&nbsp;{{ t("主页") }}
         </div>
         <div
           data-db
@@ -148,7 +148,7 @@ getMoreListData();
         >
           <el-icon>
             <Document /> </el-icon
-          >&nbsp;{{ $t("反馈") }}
+          >&nbsp;{{ t("反馈") }}
         </div>
         <div
           @click="chooseFn(StaticPage.Setting)"
@@ -157,7 +157,7 @@ getMoreListData();
         >
           <el-icon>
             <Setting /> </el-icon
-          >&nbsp;{{ $t("设置") }}
+          >&nbsp;{{ t("设置") }}
         </div>
       </div>
     </div>
@@ -218,7 +218,7 @@ getMoreListData();
   }
   .tab {
     @include flex-row-between-end;
-    height: $tab-bar-height;
+    height: tab-bar-height;
     background: var(--bg-color-tab);
     color: var(--text-color-black);
 

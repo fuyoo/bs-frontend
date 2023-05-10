@@ -27,6 +27,9 @@ export default (function () {
       close();
       gl = ElMessage.info(config);
     },
+    close(){
+      close()
+    },
     loading(txt?: string) {
       // first get the loading dom
       let fd = document.querySelector("#_loading_dom");

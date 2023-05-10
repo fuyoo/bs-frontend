@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Key, FolderOpened, Coin } from "@element-plus/icons-vue";
+import { Key, FolderOpened, Coin, Plus } from "@element-plus/icons-vue";
 import { computed, onMounted, reactive, ref } from "vue";
 import { Clear, ToggleLeft, ToggleRight, UseIcon } from "@/svgPath";
 import { useTranslation } from "i18next-vue";
@@ -21,7 +21,6 @@ const chooseDb = (i: number) => {
   getDatabaseInfo();
 };
 const getDatabaseInfo = () => {
-  console.log(route.params.id);
   queryDatabaseInfo<{
     database: string;
     keys: number;
@@ -67,7 +66,7 @@ const contextmenu = [
   <div class="_connection_view">
     <el-scrollbar class="menu">
       <div
-        :title="$t('数据库') + '.' + (i - 1)"
+        :title="t('数据库') + '.' + (i - 1)"
         v-contextmenu:[i]="contextmenu"
         @click="chooseDb(i)"
         :class="{
@@ -85,46 +84,54 @@ const contextmenu = [
           style="margin-left: 5px"
           v-show="isCollapse === false"
         >
-          {{ $t("数据库") + "." + (i - 1) }}
+          {{ t("数据库") + "." + (i - 1) }}
         </span>
       </div>
     </el-scrollbar>
     <div class="_ctx">
       <div class="_action_bar">
-        <div
-          class="toggle-menu"
-          @click="isCollapse = true"
-          v-if="!isCollapse"
-          v-html="ToggleLeft"
-        ></div>
-        <div
-          class="toggle-menu"
-          v-html="ToggleRight"
-          @click="isCollapse = false"
-          v-else
-        ></div>
+        <div class="_action_bar_action">
+          <div
+            class="toggle-menu"
+            @click="isCollapse = true"
+            v-if="!isCollapse"
+            v-html="ToggleLeft"
+          ></div>
+          <div
+            class="toggle-menu"
+            v-html="ToggleRight"
+            @click="isCollapse = false"
+            v-else
+          ></div>
+          <span class="btn"> </span>
+        </div>
+
         <div class="_action_bar_info">
-            <div class="_action_bar_info_item _action_bar_info_size">
-                <el-icon>
-                    <FolderOpened />
-                </el-icon>
-                <span>Redis {{ $t("内存") }}: {{ dbInfo.memory[2].split(":")[1] }}</span>
-            </div>
-            <el-divider direction="vertical" />
+          <el-button text :icon="Plus">{{t("新建") }}</el-button>
+          <el-divider direction="vertical" />
+          <div class="_action_bar_info_item _action_bar_info_size">
+            <el-icon>
+              <FolderOpened />
+            </el-icon>
+            <span
+              >Redis {{ t("内存") }}:
+              {{ dbInfo.memory[2].split(":")[1] }}</span
+            >
+          </div>
+          <el-divider direction="vertical" />
           <div class="_action_bar_info_item _action_bar_info_database">
             <el-icon>
               <Coin />
             </el-icon>
-            <span>{{ $t("数据库") + "." + (db - 1) }}</span>
+            <span>{{ t("数据库") + ":" + (db - 1) }}</span>
           </div>
-            <el-divider direction="vertical" />
-            <div class="_action_bar_info_item _action_bar_info_keys">
+          <el-divider direction="vertical" />
+          <div class="_action_bar_info_item _action_bar_info_keys">
             <el-icon>
               <Key />
             </el-icon>
-            <span>{{ $t("键") }} : {{ dbInfo.keys }}</span>
+            <span>{{ t("键") }} : {{ dbInfo.keys }}</span>
           </div>
-
         </div>
       </div>
       <el-scrollbar class="_scroller_ctx">
@@ -146,9 +153,8 @@ const contextmenu = [
     height: calc(100% - 40px);
     margin-top: 20px;
     width: max-content;
-    background: $bg-framework;
     box-sizing: border-box;
-
+    flex-shrink: 0;
     ._el_menu {
       border-right: none;
       display: flex;
@@ -183,6 +189,7 @@ const contextmenu = [
     flex: 1;
 
     border-left: 1px solid $border-color;
+
     ._action_bar {
       height: $action-bar-height;
       background: var(--el-menu-bg-color);
@@ -192,6 +199,16 @@ const contextmenu = [
       display: flex;
       align-items: center;
       justify-content: space-between;
+
+      ._action_bar_action {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        .btn {
+          margin-left: 10px;
+        }
+      }
 
       .toggle-menu {
         width: 20px;
@@ -206,7 +223,7 @@ const contextmenu = [
         justify-content: flex-end;
         align-items: center;
         padding-right: 15px;
-
+        flex-shrink: 0;
         ._action_bar_info_item {
           display: flex;
           align-items: center;
@@ -219,7 +236,6 @@ const contextmenu = [
         }
 
         ._action_bar_info_item + ._action_bar_info_item {
-          
         }
       }
     }

@@ -10,12 +10,12 @@
     <el-form :model="form" ref="formRef" label-width="80px">
       <el-form-item
         prop="name"
-        :rules="{ required: true, message: $t('validation:连接.连接名.必须') }"
-        :label="$t('form:连接.连接名')"
+        :rules="{ required: true, message: t('validation:连接.连接名.必须') }"
+        :label="t('form:连接.连接名')"
       >
         <el-input
           autocorrect="off"
-          :placeholder="$t('form:连接.连接名')"
+          :placeholder="t('form:连接.连接名')"
           v-model="form.name"
           clearable
         />
@@ -27,13 +27,13 @@
               prop="address"
               :rules="{
                 required: true,
-                message: $t('validation:连接.地址.必须'),
+                message: t('validation:连接.地址.必须'),
               }"
-              :label="$t('form:连接.地址')"
+              :label="t('form:连接.地址')"
             >
               <el-input
                 autocorrect="off"
-                :placeholder="$t('form:连接.地址')"
+                :placeholder="t('form:连接.地址')"
                 v-model="form.address"
                 clearable
               />
@@ -45,15 +45,15 @@
               prop="port"
               :rules="{
                 required: true,
-                message: $t('validation:连接.端口.必须'),
+                message: t('validation:连接.端口.必须'),
               }"
-              :label="$t('form:连接.端口')"
+              :label="t('form:连接.端口')"
             >
               <el-input-number
                 type="number"
                 class="w-full"
                 autocorrect="off"
-                :placeholder="$t('form:连接.端口')"
+                :placeholder="t('form:连接.端口')"
                 v-model="form.port"
                 clearable
               />
@@ -61,25 +61,25 @@
           </el-col>
         </el-row>
 
-        <el-form-item :label="$t('form:连接.用户名')">
+        <el-form-item :label="t('form:连接.用户名')">
           <el-input
             autocorrect="off"
-            :placeholder="$t('form:连接.用户名')"
+            :placeholder="t('form:连接.用户名')"
             v-model="form.username"
             clearable
           />
         </el-form-item>
-        <el-form-item :label="$t('form:连接.密码')">
+        <el-form-item :label="t('form:连接.密码')">
           <el-input
             autocorrect="off"
-            :placeholder="$t('form:连接.密码')"
+            :placeholder="t('form:连接.密码')"
             v-model="form.password"
             show-password
             clearable
           />
         </el-form-item>
       </div>
-      <el-form-item :label="$t('form:连接.集群')">
+      <el-form-item :label="t('form:连接.集群')">
         <el-space>
           <el-switch v-model="form.cluster"></el-switch>
         </el-space>
@@ -111,12 +111,12 @@
           :prop="`nodes.${k}`"
           :rules="{
             required: true,
-            message: `${$t('form:连接.节点') + (k + 1)}${$t(
+            message: `${t('form:连接.节点') + (k + 1)}${t(
               'validation:连接.集群.必须'
             )}`,
           }"
           :key="k"
-          :label="$t('form:连接.节点') + (k + 1)"
+          :label="t('form:连接.节点') + (k + 1)"
         >
           <el-row style="width: 100%" :gutter="15">
             <el-col :span="20">
@@ -136,17 +136,17 @@
           </el-row>
         </el-form-item>
       </div>
-      <el-form-item :label="$t('form:连接.代理.SSH代理')">
+      <el-form-item :label="t('form:连接.代理.SSH代理')">
         <el-switch v-model="form.proxy"></el-switch>
       </el-form-item>
       <div v-if="form.proxy">
-        <el-form-item :label="$t('form:连接.代理.认证类型')">
+        <el-form-item :label="t('form:连接.代理.认证类型')">
           <el-radio-group v-model="form.proxyKeyType" class="ml-4">
             <el-radio :label="KeyType.Password"
-              >{{ $t("form:连接.代理.密码") }}
+              >{{ t("form:连接.代理.密码") }}
             </el-radio>
             <el-radio :label="KeyType.File"
-              >{{ $t("form:连接.代理.文件") }}
+              >{{ t("form:连接.代理.文件") }}
             </el-radio>
           </el-radio-group>
         </el-form-item>
@@ -156,12 +156,12 @@
               prop="proxyAddress"
               :rules="{
                 required: true,
-                message: $t('validation:连接.代理地址.必须'),
+                message: t('validation:连接.代理地址.必须'),
               }"
-              :label="$t('form:连接.代理.地址')"
+              :label="t('form:连接.代理.地址')"
             >
               <el-input
-                :placeholder="$t('form:连接.代理.地址')"
+                :placeholder="t('form:连接.代理.地址')"
                 clearable
                 v-model="form.proxyAddress"
               />
@@ -170,16 +170,16 @@
           <el-col :span="10">
             <el-form-item
                     label-width="50px"
-              :label="$t('form:连接.端口')"
+              :label="t('form:连接.端口')"
               prop="proxyPort"
               :rules="{
                 required: true,
-                message: $t('validation:连接.端口.必须'),
+                message: t('validation:连接.端口.必须'),
               }"
             >
               <el-input-number
                 class="w-full"
-                :placeholder="$t('form:连接.端口')"
+                :placeholder="t('form:连接.端口')"
                 clearable
                 v-model="form.proxyPort"
               />
@@ -188,26 +188,26 @@
         </el-row>
 
         <el-form-item
-          :label="$t('form:连接.代理.用户')"
+          :label="t('form:连接.代理.用户')"
           prop="proxyUsername"
           :rules="{
             required: true,
-            message: $t('validation:连接.代理用户.必须'),
+            message: t('validation:连接.代理用户.必须'),
           }"
         >
           <el-input
-            :placeholder="$t('form:连接.代理.用户')"
+            :placeholder="t('form:连接.代理.用户')"
             clearable
             v-model="form.proxyUsername"
           />
         </el-form-item>
         <el-form-item
           v-if="form.proxyKeyType === KeyType.File"
-          :label="$t('form:连接.代理.文件')"
+          :label="t('form:连接.代理.文件')"
           prop="proxyFilePath"
           :rules="{
             required: true,
-            message: $t('validation:连接.代理密钥文件.必须'),
+            message: t('validation:连接.代理密钥文件.必须'),
           }"
         >
           <el-row :gutter="15" style="width: 100%">
@@ -220,9 +220,9 @@
               "
             >
               <el-popover placement="top-start">
-                {{ form.proxyFilePath || $t("form:连接.代理.请选择文件") }}
+                {{ form.proxyFilePath || t("form:连接.代理.请选择文件") }}
                 <template #reference>
-                  {{ form.proxyFilePath || $t("form:连接.代理.请选择文件") }}
+                  {{ form.proxyFilePath || t("form:连接.代理.请选择文件") }}
                 </template>
               </el-popover>
             </el-col>
@@ -237,16 +237,16 @@
         </el-form-item>
         <el-form-item
           v-if="form.proxyKeyType === KeyType.Password"
-          :label="$t('form:连接.代理.密码')"
+          :label="t('form:连接.代理.密码')"
           prop="proxyPassword"
           :rules="{
             required: true,
-            message: $t('validation:连接.代理密码.必须'),
+            message: t('validation:连接.代理密码.必须'),
           }"
         >
           <el-input
             v-model="form.proxyPassword"
-            :placeholder="$t('form:连接.代理.密码')"
+            :placeholder="t('form:连接.代理.密码')"
             clearable
             show-password
           ></el-input>
@@ -255,12 +255,12 @@
     </el-form>
     <template #footer>
       <span class="dialog-footer">
-        <el-button @click="visible = false">{{ $t("取消") }}</el-button>
+        <el-button @click="visible = false">{{ t("取消") }}</el-button>
         <el-button type="primary" @click="okFn">
-          {{ $t("提交") }}
+          {{ t("提交") }}
         </el-button>
         <el-button type="primary" @click="testFn">
-          {{ $t("测试") }}
+          {{ t("测试") }}
         </el-button>
       </span>
     </template>

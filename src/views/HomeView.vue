@@ -4,7 +4,6 @@ import type { Ref } from "vue";
 import ConnectionDialog from "@/components/ConnectionDialog.vue";
 import request from "@/utils/request";
 import { useTabStore } from "@/stores/tab";
-import router from "@/router";
 import type { TabProps } from "@/components/TabBar/type";
 import {
   Plus,
@@ -14,7 +13,7 @@ import {
   SwitchButton,
 } from "@element-plus/icons-vue";
 import { isAvailable } from "@/api/database";
-
+import {t} from "i18next"
 const tabStore = useTabStore();
 let connectionDialogRef: Ref = ref(null);
 let list: Ref<any[]> = ref([]);
@@ -63,7 +62,7 @@ const deleteFn = (data: TabProps) => {
       <div class="_db_info">
         <el-icon size="16">
           <Plus /> </el-icon
-        >&nbsp;{{ $t("创建") }}
+        >&nbsp;{{ t("创建") }}
       </div>
     </div>
     <div class="_db_i" v-for="item in list" :key="item.id">
