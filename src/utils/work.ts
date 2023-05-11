@@ -25,7 +25,7 @@ function genTreeData (keys: string[], tree: Tree[], splitSymbol: string)  {
     if (step === deep - 1) {
       parent.children.push({
         label: val[step],
-        id: val.join(":"),
+        id: val.join(splitSymbol),
       });
       return;
     }
